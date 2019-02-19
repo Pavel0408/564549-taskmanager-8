@@ -341,7 +341,7 @@ It is example of repeating task. It marks by wave.</textarea
   `;
 };
 
-const renderFilters =  () => {
+const renderFilters = () => {
   const filterContainer = document.querySelector(`.main__filter`);
   let fragment = ``;
   filtersNames.forEach((value, index) => {
@@ -350,7 +350,7 @@ const renderFilters =  () => {
   filterContainer.innerHTML = fragment;
 };
 
-const renderCards =  (number) => {
+const renderCards = (number) => {
   const board = document.querySelector(`.board__tasks`);
   let fragment = ``;
   for (let i = 0; i < number; i++) {
@@ -359,17 +359,17 @@ const renderCards =  (number) => {
   board.innerHTML = fragment;
 };
 
-const filterClickHandler =  (evt) => {
+const filterClickHandler = (evt) => {
   const filter = evt.target.closest(`.filter__label`);
   if (filter) {
     const number = +filter.querySelector(`.filter__all-count`).textContent;
 
-    if (typeof number === "number") {
+    if (typeof number === `number`) {
       renderCards(number);
     }
   }
-}
+};
 
 renderFilters();
 renderCards(START_CARDS_COUNT);
-document.body.addEventListener('click', filterClickHandler);
+document.body.addEventListener(`click`, filterClickHandler);
