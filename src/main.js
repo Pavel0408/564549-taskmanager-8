@@ -31,22 +31,20 @@ const getRandomNumber = function (min, max) {
 
 const generateFilter = (count) => {
   const cardNumbers = getRandomNumber(MIN_CARDS_NUMBERS, MAX_CARDS_NUMBERS);
-  return `
-<input
-type="radio"
-id="${filtersIdentifers[count]}"
-class="filter__input visually-hidden"
-name="filter"/>
-<label for="${filtersIdentifers[count]}"
-class="filter__label">
-${filtersNames[count]}
-<span class="filter__all-count">${cardNumbers}</span>
-</label>`;
+  return `<input
+          type="radio"
+          id="${filtersIdentifers[count]}"
+          class="filter__input visually-hidden"
+          name="filter"/>
+          <label for="${filtersIdentifers[count]}"
+          class="filter__label">
+          ${filtersNames[count]}
+          <span class="filter__all-count">${cardNumbers}</span>
+          </label>`;
 };
 
 const generateCard = () => {
-  return `
-  <article class="card card--pink card--repeat">
+  return `<article class="card card--pink card--repeat">
             <form class="card__form" method="get">
               <div class="card__inner">
                 <div class="card__control">
