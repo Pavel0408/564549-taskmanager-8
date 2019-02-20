@@ -1,22 +1,12 @@
 'use strict';
 const filtersNames = [
-  `ALL`,
-  `OVERDUE`,
-  `TODAY`,
-  `FAVORITES`,
-  `Repeating`,
-  `Tags`,
-  `ARCHIVE`
-];
-
-const filtersIdentifers = [
-  `filter__all`,
-  `filter__overdue`,
-  `filter__today`,
-  `filter__favorites`,
-  `filter__repeating`,
-  `filter__tags`,
-  `filter__archive`
+  `all`,
+  `overdue`,
+  `today`,
+  `favorites`,
+  `repeating`,
+  `tags`,
+  `archive`
 ];
 
 const MAX_CARDS_NUMBERS = 15;
@@ -33,10 +23,10 @@ const generateFilter = (count) => {
   const cardNumbers = getRandomNumber(MIN_CARDS_NUMBERS, MAX_CARDS_NUMBERS);
   return `<input
           type="radio"
-          id="${filtersIdentifers[count]}"
+          id="filter__${filtersNames[count]}"
           class="filter__input visually-hidden"
           name="filter"/>
-          <label for="${filtersIdentifers[count]}"
+          <label for="filter__${filtersNames[count]}"
           class="filter__label">
           ${filtersNames[count]}
           <span class="filter__all-count">${cardNumbers}</span>
