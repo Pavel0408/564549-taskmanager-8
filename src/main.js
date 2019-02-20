@@ -36,12 +36,12 @@ const generateFilter = (count) => {
 type="radio"
 id="${filtersIdentifers[count]}"
 class="filter__input visually-hidden"
-name="filter"
-/>
-<label for="${filtersIdentifers[count]}" class="filter__label">
-${filtersNames[count]} <span class="filter__all-count">${cardNumbers}</span></label
->
-`;
+name="filter"/>
+<label for="${filtersIdentifers[count]}"
+class="filter__label">
+${filtersNames[count]}
+<span class="filter__all-count">${cardNumbers}</span>
+</label>`;
 };
 
 const generateCard = () => {
