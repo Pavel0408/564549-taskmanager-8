@@ -325,9 +325,9 @@ const renderCards = (number) => {
 const filterClickHandler = (evt) => {
   const filter = evt.target.closest(`.filter__label`);
   if (filter) {
-    const number = +filter.querySelector(`.filter__all-count`).textContent;
+    const number = parseInt(filter.querySelector(`.filter__all-count`).textContent, 10);
 
-    if (typeof number === `number`) {
+    if (number) {
       renderCards(number);
     }
   }
