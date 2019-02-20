@@ -19,9 +19,9 @@ const filtersIdentifers = [
   `filter__archive`
 ];
 
-const START_CARDS_COUNT = 7;
-const MIN_CARDS_NUMBERS = 1;
 const MAX_CARDS_NUMBERS = 15;
+const MIN_CARDS_NUMBERS = 1;
+const START_CARDS_COUNT = 7;
 
 const getRandomNumber = (min, max) => {
   let rand = min + Math.random() * (max + 1 - min);
