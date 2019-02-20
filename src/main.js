@@ -325,4 +325,5 @@ const filterClickHandler = (evt) => {
 
 renderFilters();
 renderCards(START_CARDS_COUNT);
+
 document.body.addEventListener(`click`, filterClickHandler);
