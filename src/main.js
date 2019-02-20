@@ -23,7 +23,7 @@ const START_CARDS_COUNT = 7;
 const MIN_CARDS_NUMBERS = 1;
 const MAX_CARDS_NUMBERS = 15;
 
-const getRandomNumber = function (min, max) {
+const getRandomNumber = (min, max) => {
   let rand = min + Math.random() * (max + 1 - min);
   rand = Math.floor(rand);
   return rand;
