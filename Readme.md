@@ -1,7 +1,7 @@
 # Личный проект «Менеджер задач» [![Build status][travis-image]][travis-url]
 
 * Студент: [Павел Григорьев](https://up.htmlacademy.ru/ecmascript/8/user/564549).
-* Наставник: `Неизвестно`.
+* Наставник: [Олег Акинин](https://htmlacademy.ru/profile/id372677).
 
 ---
 
