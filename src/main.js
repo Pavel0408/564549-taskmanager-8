@@ -8,8 +8,8 @@ const START_CARDS_COUNT = 7;
 const renderFilters = () => {
   const filterContainer = document.querySelector(`.main__filter`);
   let fragment = ``;
-  filtersNames.forEach((value, index) => {
-    fragment += generateFilter(index);
+  filtersNames.forEach((filterName) => {
+    fragment += generateFilter(filterName);
   });
   filterContainer.innerHTML = fragment;
 };

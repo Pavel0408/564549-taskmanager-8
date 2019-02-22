@@ -12,15 +12,15 @@ export const filtersNames = [
   `tags`,
   `archive`
 ];
-export const generateFilter = (count) => {
+export const generateFilter = (filterName) => {
   const cardNumbers = getRandomNumber(MIN_CARDS_NUMBERS, MAX_CARDS_NUMBERS);
   return `<input
             type="radio"
-            id="filter__${filtersNames[count]}"
+            id="filter__${filterName}"
             class="filter__input visually-hidden"
             name="filter"/>
-    <label for="filter__${filtersNames[count]}" class="filter__label">
-      ${filtersNames[count]}
+    <label for="filter__${filterName}" class="filter__label">
+      ${filterName}
       <span class="filter__all-count">${cardNumbers}</span>
     </label>`;
 };
