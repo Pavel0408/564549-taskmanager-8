@@ -1,18 +1,11 @@
 import {
   getRandomNumber
 } from './utilities';
+
 const MAX_CARDS_NUMBERS = 15;
 const MIN_CARDS_NUMBERS = 1;
-export const filtersNames = [
-  `all`,
-  `overdue`,
-  `today`,
-  `favorites`,
-  `repeating`,
-  `tags`,
-  `archive`
-];
-export const generateFilter = (filterName) => {
+
+export default (filterName) => {
   const cardNumbers = getRandomNumber(MIN_CARDS_NUMBERS, MAX_CARDS_NUMBERS);
   return `<input
             type="radio"

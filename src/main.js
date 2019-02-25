@@ -1,8 +1,9 @@
+import generateFilter from './generate-filter';
 import {
-  generateFilter,
   filtersNames
-} from './generate-filter';
+} from './constants';
 import generateCard from './generate-card';
+
 const START_CARDS_COUNT = 7;
 
 const renderFilters = () => {
