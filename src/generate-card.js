@@ -58,14 +58,16 @@ export default (card) => {
                     type="text"
                     placeholder="${dateFormatter.format(card.dueDate)} ${monthFormatter.format(card.dueDate)}"
                     name="date"
+                    value = "${dateFormatter.format(card.dueDate)} ${monthFormatter.format(card.dueDate)}"
                   />
                 </label>
                 <label class="card__input-deadline-wrap">
                   <input
                     class="card__time"
                     type="text"
-                    placeholder="${card.dueDate.toLocaleTimeString(`en-US`, {hour: `numeric`, minute: `numeric`})}
+                    placeholder="${card.dueDate.toLocaleTimeString(`en-US`, {hour: `numeric`, minute: `numeric`})}"
                     name="time"
+                    value = "${card.dueDate.toLocaleTimeString(`en-US`, {hour: `numeric`, minute: `numeric`})}"
                   />
                 </label>
               </fieldset>
