@@ -40,19 +40,8 @@ renderCards(START_CARDS_COUNT);
 
 document.body.addEventListener(`click`, filterClickHandler);
 
-import {RepeatingDays} from "./mock/repeating-days";
-console.log(RepeatingDays);
-const a = new RepeatingDays();
-console.log(a);
+import {
+  generateCardsArray
+} from "./mock/generate-mock-cards-array";
 
-import {gnerateMockDate} from "./mock/generate-mok-date";
-console.log(gnerateMockDate());
-
-import {GenrateMockCard} from "./mock/generate-mock-card";
-
-console.log(new GenrateMockCard());
-
-import mokArrays from "./mock/mock-arrays";
-
-console.log(mokArrays.tags.slice(0, mokArrays.tags.length - 1));
-
+console.log(generateCardsArray(10));
