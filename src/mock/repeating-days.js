@@ -1,11 +1,11 @@
 import {
-  getRandomIndex
+  getRandomValue
 } from "./../utilities";
 
 import mokArrays from "./mock-arrays";
 
 export const RepeatingDays = function () {
   mokArrays.repeatingDays.forEach((day) => {
-    this[day] = mokArrays.boolArray[getRandomIndex(mokArrays.boolArray)];
+    this[day] = getRandomValue(mokArrays.boolArray);
   });
 };
