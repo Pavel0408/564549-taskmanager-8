@@ -30,9 +30,15 @@ const repeatingDays = [
   `Su`
 ];
 
+const boolArray = [
+  true,
+  false
+];
+
 export default {
   titles,
   tags,
   colors,
-  repeatingDays
+  repeatingDays,
+  boolArray
 };

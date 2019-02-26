@@ -3,3 +3,8 @@ export const getRandomNumber = (min, max) => {
   rand = Math.floor(rand);
   return rand;
 };
+
+// случайный индекс массива
+export const getRandomIndex = (arr) => {
+  return getRandomNumber(0, arr.length - 1);
+};

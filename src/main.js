@@ -39,3 +39,9 @@ renderFilters();
 renderCards(START_CARDS_COUNT);
 
 document.body.addEventListener(`click`, filterClickHandler);
+
+import {RepeatingDays} from "./mock/repeating-days";
+console.log(RepeatingDays);
+const a = new RepeatingDays();
+console.log(a);
+
