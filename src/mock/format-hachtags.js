@@ -17,4 +17,4 @@ export const formatHachtags = (hachtagsSet) => {
   </span>`;
   });
   return fragment;
-}
+};

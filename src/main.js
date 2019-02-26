@@ -43,5 +43,3 @@ renderFilters();
 renderCards(START_CARDS_COUNT);
 
 document.body.addEventListener(`click`, filterClickHandler);
-
-console.log(generateCardsArray(10));
