@@ -1,11 +1,18 @@
 import generateFilter from './generate-filter';
-import {
-  filtersNames
-} from './constants';
 import generateCard from './generate-card';
 import {
   generateCardsArray
 } from "./mock/generate-mock-cards-array";
+
+const filtersNames = [
+  `all`,
+  `overdue`,
+  `today`,
+  `favorites`,
+  `repeating`,
+  `tags`,
+  `archive`
+];
 
 const START_CARDS_COUNT = 7;
 
