@@ -1,7 +1,7 @@
 import {
   getRandomValue,
   getRandomNumber
-} from "./../utilities";
+} from "../utilities";
 
 import {
   gnerateMockDate
