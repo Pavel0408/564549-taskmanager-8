@@ -14,8 +14,10 @@ export const days = {
   Sunday: `Su`
 };
 
-export const RepeatingDays = function () {
+export const repeatingDays = function () {
+  const daysObject = {};
   mokArrays.repeatingDays.forEach((day) => {
-    this[day] = getRandomValue(mokArrays.boolArray);
+    daysObject[day] = getRandomValue(mokArrays.boolArray);
   });
+  return daysObject;
 };
