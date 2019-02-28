@@ -1,6 +1,6 @@
 import {
   formatHachtags
-} from "./mock/format-hachtags";
+} from "./format-hachtags";
 
 import {
   days
