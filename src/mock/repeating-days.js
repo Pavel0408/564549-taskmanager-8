@@ -1,6 +1,6 @@
 import {
   getRandomValue
-} from "./../utilities";
+} from "../utilities";
 
 import mokArrays from "./mock-arrays";
 

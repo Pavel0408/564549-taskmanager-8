@@ -1,6 +1,6 @@
 import {
   getRandomNumber
-} from './../utilities';
+} from '../utilities';
 export const gnerateMockDate = () => {
   const MS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
   const dateNow = new Date();

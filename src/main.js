@@ -28,9 +28,9 @@ const renderFilters = () => {
 const renderCards = (number) => {
   const board = document.querySelector(`.board__tasks`);
   let fragment = ``;
-  const mokCards = generateCardsArray(number);
+  const mockCards = generateCardsArray(number);
   for (let i = 0; i < number; i++) {
-    fragment += generateCard(mokCards[i]);
+    fragment += generateCard(mockCards[i]);
   }
   board.innerHTML = fragment;
 };

@@ -1,11 +1,11 @@
 import {
   getRandomValue,
   getRandomNumber
-} from "./../utilities";
+} from "../utilities";
 
 import {
   gnerateMockDate
-} from "./generate-mok-date";
+} from "./generate-mock-date";
 
 import {
   RepeatingDays
