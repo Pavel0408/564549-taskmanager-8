@@ -2,6 +2,10 @@ import {
   formatHachtags
 } from "./mock/format-hachtags";
 
+import {
+  days
+} from "./mock/repeating-days";
+
 const dateFormatter = new Intl.DateTimeFormat(`en-US`, {
   day: `numeric`
 });
@@ -84,7 +88,7 @@ export default (card) => {
                     id="repeat-mo-5"
                     name="repeat"
                     value="mo"
-                    ${card.repeatingDays[`Mo`] ? `checked` : ``}
+                    ${card.repeatingDays[days[`Monday`]] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-mo-5"
                     >mo</label
@@ -95,7 +99,7 @@ export default (card) => {
                     id="repeat-tu-5"
                     name="repeat"
                     value="tu"
-                    ${card.repeatingDays[`Tu`] ? `checked` : ``}
+                    ${card.repeatingDays[days[`Tuesday`]] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-tu-5"
                     >tu</label
@@ -106,7 +110,7 @@ export default (card) => {
                     id="repeat-we-5"
                     name="repeat"
                     value="we"
-                    ${card.repeatingDays[`We`] ? `checked` : ``}
+                    ${card.repeatingDays[days[`Wednesday`]] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-we-5"
                     >we</label
@@ -117,7 +121,7 @@ export default (card) => {
                     id="repeat-th-5"
                     name="repeat"
                     value="th"
-                    ${card.repeatingDays[`Th`] ? `checked` : ``}
+                    ${card.repeatingDays[days[`Thursday`]] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-th-5"
                     >th</label
@@ -128,7 +132,7 @@ export default (card) => {
                     id="repeat-fr-5"
                     name="repeat"
                     value="fr"
-                    ${card.repeatingDays[`Fr`] ? `checked` : ``}
+                    ${card.repeatingDays[days[`Friday`]] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-fr-5"
                     >fr</label
@@ -139,7 +143,7 @@ export default (card) => {
                     name="repeat"
                     value="sa"
                     id="repeat-sa-5"
-                    ${card.repeatingDays[`Sa`] ? `checked` : ``}
+                    ${card.repeatingDays[days[`Saturday`]] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-sa-5"
                     >sa</label
@@ -150,7 +154,7 @@ export default (card) => {
                     id="repeat-su-5"
                     name="repeat"
                     value="su"
-                    ${card.repeatingDays[`Su`] ? `checked` : ``}
+                    ${card.repeatingDays[days[`Sunday`]] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-su-5"
                     >su</label
