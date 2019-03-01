@@ -12,24 +12,6 @@ const tags = [
   `keks`
 ];
 
-const colors = [
-  `black`,
-  `yellow`,
-  `blue`,
-  `green`,
-  `pink`
-];
-
-const repeatingDays = [
-  `Mo`,
-  `Tu`,
-  `We`,
-  `Th`,
-  `Fr`,
-  `Sa`,
-  `Su`
-];
-
 const boolArray = [
   true,
   false
@@ -38,7 +20,5 @@ const boolArray = [
 export default {
   titles,
   tags,
-  colors,
-  repeatingDays,
   boolArray
 };
