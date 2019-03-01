@@ -88,7 +88,7 @@ export default (card) => {
                     id="repeat-mo-5"
                     name="repeat"
                     value="mo"
-                    ${card.repeatingDays[days[`Monday`]] ? `checked` : ``}
+                    ${card.repeatingDays[days.Monday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-mo-5"
                     >mo</label
@@ -99,7 +99,7 @@ export default (card) => {
                     id="repeat-tu-5"
                     name="repeat"
                     value="tu"
-                    ${card.repeatingDays[days[`Tuesday`]] ? `checked` : ``}
+                    ${card.repeatingDays[days.Tuesday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-tu-5"
                     >tu</label
@@ -110,7 +110,7 @@ export default (card) => {
                     id="repeat-we-5"
                     name="repeat"
                     value="we"
-                    ${card.repeatingDays[days[`Wednesday`]] ? `checked` : ``}
+                    ${card.repeatingDays[days.Wednesday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-we-5"
                     >we</label
@@ -121,7 +121,7 @@ export default (card) => {
                     id="repeat-th-5"
                     name="repeat"
                     value="th"
-                    ${card.repeatingDays[days[`Thursday`]] ? `checked` : ``}
+                    ${card.repeatingDays[days.Thursday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-th-5"
                     >th</label
@@ -132,7 +132,7 @@ export default (card) => {
                     id="repeat-fr-5"
                     name="repeat"
                     value="fr"
-                    ${card.repeatingDays[days[`Friday`]] ? `checked` : ``}
+                    ${card.repeatingDays[days.Friday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-fr-5"
                     >fr</label
@@ -143,7 +143,7 @@ export default (card) => {
                     name="repeat"
                     value="sa"
                     id="repeat-sa-5"
-                    ${card.repeatingDays[days[`Saturday`]] ? `checked` : ``}
+                    ${card.repeatingDays[days.Saturday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-sa-5"
                     >sa</label
@@ -154,7 +154,7 @@ export default (card) => {
                     id="repeat-su-5"
                     name="repeat"
                     value="su"
-                    ${card.repeatingDays[days[`Sunday`]] ? `checked` : ``}
+                    ${card.repeatingDays[days.Sunday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-su-5"
                     >su</label
