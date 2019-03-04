@@ -1,6 +1,6 @@
 export const formatHachtags = (hachtagsSet) => {
   let fragment = ``;
-  hachtagsSet.forEach((hachtag)=> {
+  hachtagsSet.forEach((hachtag) => {
     fragment += `<span class="card__hashtag-inner">
     <input
       type="hidden"
