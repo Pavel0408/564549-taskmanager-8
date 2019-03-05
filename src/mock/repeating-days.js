@@ -6,7 +6,7 @@ import {
   repeatingDays as repeatingDaysArr
 } from "../constats";
 
-import mokArrays from "./mock-arrays";
+import moсkArrays from "./mock-arrays";
 
 export const days = {
   Monday: `Mo`,
@@ -21,7 +21,7 @@ export const days = {
 export const repeatingDays = function () {
   const daysObject = {};
   repeatingDaysArr.forEach((day) => {
-    daysObject[day] = getRandomValue(mokArrays.boolArray);
+    daysObject[day] = getRandomValue(moсkArrays.boolArray);
   });
   return daysObject;
 };
