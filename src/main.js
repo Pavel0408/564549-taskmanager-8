@@ -1,8 +1,18 @@
 import generateFilter from './generate-filter';
-import {
-  filtersNames
-} from './constants';
 import generateCard from './generate-card';
+import {
+  generateCardsArray
+} from "./mock/generate-mock-cards-array";
+
+const filtersNames = [
+  `all`,
+  `overdue`,
+  `today`,
+  `favorites`,
+  `repeating`,
+  `tags`,
+  `archive`
+];
 
 const START_CARDS_COUNT = 7;
 
@@ -18,8 +28,9 @@ const renderFilters = () => {
 const renderCards = (number) => {
   const board = document.querySelector(`.board__tasks`);
   let fragment = ``;
+  const mockCards = generateCardsArray(number);
   for (let i = 0; i < number; i++) {
-    fragment += generateCard();
+    fragment += generateCard(mockCards[i]);
   }
   board.innerHTML = fragment;
 };
