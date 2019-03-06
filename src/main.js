@@ -1,5 +1,4 @@
 import generateFilter from './generate-filter';
-import generateCard from './generate-card';
 import {
   generateCardsArray
 } from "./mock/generate-mock-cards-array";
@@ -36,13 +35,11 @@ const renderCards = (number) => {
   let fragment = document.createDocumentFragment();
   mockCards = generateCardsArray(number);
   board.innerHTML = ``;
-  console.log(mockCards);
-  for (let i = 0; i < number; i++) {
-    mockCards[i]._id = i;
-    fragment.appendChild(mockCards[i].render(getCardTemplate));
-
-    console.log(board.innerHTML);
-  }
+  mockCards = generateCardsArray(number);
+  mockCards.forEach((card, index) => {
+    mockCards[index]._id = index;
+    fragment.appendChild(card.render(getCardTemplate));
+  });
   board.appendChild(fragment);
 };
 
@@ -60,24 +57,24 @@ const filterClickHandler = (evt) => {
 const buttonsClickHandler = (evt) => {
   evt.preventDefault();
   const button = evt.target.textContent.trim();
-  console.log(button);
   if (button === `edit` || button === `save` || button === `delete`) {
-    console.log(`пошло`);
     const card = evt.target.closest(`article`);
     const cardId = card.id;
     let template = ``;
+
     if (button === `edit`) {
       template = getEditCardtemplate;
+
     } else if (button === `save`) {
       template = getCardTemplate;
+
     } else if (button === `delete`) {
       card.remove();
       mockCards[cardId] = null;
       return;
     }
-    console.log(cardId);
+
     mockCards[cardId].changeEditing();
-    console.log(mockCards[cardId]);
     board.replaceChild(mockCards[cardId].render(template), card);
     return;
   }
