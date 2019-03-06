@@ -18,9 +18,11 @@ const filtersNames = [
   `archive`
 ];
 
-let mockCards = [];
+
 const board = document.querySelector(`.board__tasks`);
 const START_CARDS_COUNT = 7;
+
+let mockCards = [];
 
 const renderFilters = () => {
   const filterContainer = document.querySelector(`.main__filter`);
@@ -76,7 +78,7 @@ const buttonsClickHandler = (evt) => {
       return;
     }
 
-    mockCards[cardId].changeEditing();
+    mockCards[cardId].changeEditingStatus();
     board.replaceChild(mockCards[cardId].render(template), card);
     return;
   }
