@@ -1,24 +1,3 @@
-import {
-  formatHachtags
-} from "../format-hachtags";
-
-import {
-  days
-} from "./repeating-days";
-
-import {
-  getCardTemplate,
-  getEditCardtemplate
-} from "../generate-card";
-
-
-const dateFormatter = new Intl.DateTimeFormat(`en-US`, {
-  day: `numeric`
-});
-const monthFormatter = new Intl.DateTimeFormat(`en-US`, {
-  month: `long`
-});
-
 export class Task {
   constructor(card) {
     this._title = card.title;
@@ -40,20 +19,10 @@ export class Task {
     });
   }
 
-  unrender() {
-    this._element = null;
-  }
-
-  get template() {
-    return this._editing ? getEditCardtemplate(this) : getCardTemplate(this);
-  }
-
   render(template) {
     const newElement = document.createElement(`div`);
     newElement.innerHTML = template(this);
-    console.log(newElement);
     this._element = newElement.firstChild;
-    console.log(this._element);
     return this._element;
   }
 

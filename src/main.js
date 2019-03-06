@@ -6,7 +6,7 @@ import {
 import {
   getCardTemplate,
   getEditCardtemplate
-} from "./generate-card";
+} from "./templates";
 
 const filtersNames = [
   `all`,
@@ -37,8 +37,10 @@ const renderCards = (number) => {
   board.innerHTML = ``;
   mockCards = generateCardsArray(number);
   mockCards.forEach((card, index) => {
-    mockCards[index]._id = index;
-    fragment.appendChild(card.render(getCardTemplate));
+    if (card) {
+      mockCards[index]._id = index;
+      fragment.appendChild(card.render(getCardTemplate));
+    }
   });
   board.appendChild(fragment);
 };
@@ -68,7 +70,7 @@ const buttonsClickHandler = (evt) => {
     } else if (button === `save`) {
       template = getCardTemplate;
 
-    } else if (button === `delete`) {
+    } else {
       card.remove();
       mockCards[cardId] = null;
       return;
