@@ -27,7 +27,7 @@ export class Task {
     this._dueDate = card.dueDate;
     this._repeatingDays = card.repeatingDays;
     this._element = null;
-    this._editing = true;
+    this._editing = false;
     this._id = ``;
     this.isDone = card.isDone;
     this._color = card.color;
@@ -48,12 +48,16 @@ export class Task {
     return this._editing ? getEditCardtemplate(this) : getCardTemplate(this);
   }
 
-  render() {
+  render(template) {
     const newElement = document.createElement(`div`);
-    newElement.innerHTML = this.template;
+    newElement.innerHTML = template(this);
     console.log(newElement);
     this._element = newElement.firstChild;
     console.log(this._element);
     return this._element;
+  }
+
+  changeEditing() {
+    this.__editing = !this.__editing;
   }
 }

@@ -4,6 +4,11 @@ import {
   generateCardsArray
 } from "./mock/generate-mock-cards-array";
 
+import {
+  getCardTemplate,
+  getEditCardtemplate
+} from "./generate-card";
+
 const filtersNames = [
   `all`,
   `overdue`,
@@ -14,6 +19,8 @@ const filtersNames = [
   `archive`
 ];
 
+let mockCards = [];
+const board = document.querySelector(`.board__tasks`);
 const START_CARDS_COUNT = 7;
 
 const renderFilters = () => {
@@ -26,14 +33,13 @@ const renderFilters = () => {
 };
 
 const renderCards = (number) => {
-  const board = document.querySelector(`.board__tasks`);
   let fragment = document.createDocumentFragment();
-  const mockCards = generateCardsArray(number);
+  mockCards = generateCardsArray(number);
   board.innerHTML = ``;
   console.log(mockCards);
   for (let i = 0; i < number; i++) {
-
-    fragment.appendChild(mockCards[i].render());
+    mockCards[i]._id = i;
+    fragment.appendChild(mockCards[i].render(getCardTemplate));
 
     console.log(board.innerHTML);
   }
@@ -51,7 +57,35 @@ const filterClickHandler = (evt) => {
   }
 };
 
+const buttonsClickHandler = (evt) => {
+  evt.preventDefault();
+  const button = evt.target.textContent.trim();
+  console.log(button);
+  if (button === `edit` || button === `save` || button === `delete`) {
+    console.log(`пошло`);
+    const card = evt.target.closest(`article`);
+    const cardId = card.id;
+    let template = ``;
+    if (button === `edit`) {
+      template = getEditCardtemplate;
+    } else if (button === `save`) {
+      template = getCardTemplate;
+    } else if (button === `delete`) {
+      card.remove();
+      mockCards[cardId] = null;
+      return;
+    }
+    console.log(cardId);
+    mockCards[cardId].changeEditing();
+    console.log(mockCards[cardId]);
+    board.replaceChild(mockCards[cardId].render(template), card);
+    return;
+  }
+
+};
+
 renderFilters();
 renderCards(START_CARDS_COUNT);
 
 document.body.addEventListener(`click`, filterClickHandler);
+document.body.addEventListener(`click`, buttonsClickHandler);

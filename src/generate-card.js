@@ -14,7 +14,7 @@ const monthFormatter = new Intl.DateTimeFormat(`en-US`, {
 });
 
 export const getCardTemplate = (card) => {
-  return `<article class="card card--${card._color} ${card._isRepeating() ? `card--repeat` : ``}" id="${card.id}">
+  return `<article class="card card--${card._color} ${card._isRepeating() ? `card--repeat` : ``}" id="${card._id}">
     <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__control">
@@ -270,7 +270,7 @@ export const getCardTemplate = (card) => {
 };
 
 export const getEditCardtemplate = (card) => {
-  return `<article class="card card--edit card--${card._color} ${card._isRepeating() ? `card--repeat` : ``}">
+  return `<article class="card card--edit card--${card._color} ${card._isRepeating() ? `card--repeat` : ``}" id="${card._id}">
     <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__control">
