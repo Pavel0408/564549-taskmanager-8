@@ -27,12 +27,17 @@ const renderFilters = () => {
 
 const renderCards = (number) => {
   const board = document.querySelector(`.board__tasks`);
-  let fragment = ``;
+  let fragment = document.createDocumentFragment();
   const mockCards = generateCardsArray(number);
+  board.innerHTML = ``;
+  console.log(mockCards);
   for (let i = 0; i < number; i++) {
-    fragment += generateCard(mockCards[i]);
+
+    fragment.appendChild(mockCards[i].render());
+
+    console.log(board.innerHTML);
   }
-  board.innerHTML = fragment;
+  board.appendChild(fragment);
 };
 
 const filterClickHandler = (evt) => {

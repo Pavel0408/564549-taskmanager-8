@@ -1,10 +1,11 @@
 import {
   formatHachtags
-} from "./format-hachtags";
+} from "../format-hachtags";
 
 import {
   days
-} from "./mock/repeating-days";
+} from "./repeating-days";
+
 
 const dateFormatter = new Intl.DateTimeFormat(`en-US`, {
   day: `numeric`
@@ -13,8 +14,33 @@ const monthFormatter = new Intl.DateTimeFormat(`en-US`, {
   month: `long`
 });
 
-export default (card) => {
-  return `<article class="card card--${card._color}">
+export class Task {
+  constructor(card) {
+    this._title = card.title;
+    this._tags = card.tags;
+    this._picture = card.picture;
+    this._dueDate = card.dueDate;
+    this._repeatingDays = card.repeatingDays;
+    this._element = null;
+    this._editing = false;
+    this._id = ``;
+    this.isDone = card.isDone;
+    this._color = card.color;
+    this.isFavorite = card.isFavorite;
+  }
+
+  isRepeating() {
+    return Object.values(this._repeatingDays).some((day) => {
+      return day === true;
+    });
+  }
+
+  unrender() {
+    this._element = null;
+  }
+
+  get template() {
+    return `<article class="card card--${this._color}">
     <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__control">
@@ -44,7 +70,7 @@ export default (card) => {
               class="card__text"
               placeholder="Start typing your text here..."
               name="text"
-            >${card._title}</textarea>
+            >${this._title}</textarea>
           </label>
         </div>
 
@@ -60,18 +86,18 @@ export default (card) => {
                   <input
                     class="card__date"
                     type="text"
-                    placeholder="${dateFormatter.format(card._dueDate)} ${monthFormatter.format(card._dueDate)}"
+                    placeholder="${dateFormatter.format(this._dueDate)} ${monthFormatter.format(this._dueDate)}"
                     name="date"
-                    value = "${dateFormatter.format(card._dueDate)} ${monthFormatter.format(card._dueDate)}"
+                    value = "${dateFormatter.format(this._dueDate)} ${monthFormatter.format(this._dueDate)}"
                   />
                 </label>
                 <label class="card__input-deadline-wrap">
                   <input
                     class="card__time"
                     type="text"
-                    placeholder="${card._dueDate.toLocaleTimeString(`en-US`, {hour: `numeric`, minute: `numeric`})}"
+                    placeholder="${this._dueDate.toLocaleTimeString(`en-US`, {hour: `numeric`, minute: `numeric`})}"
                     name="time"
-                    value = "${card._dueDate.toLocaleTimeString(`en-US`, {hour: `numeric`, minute: `numeric`})}"
+                    value = "${this._dueDate.toLocaleTimeString(`en-US`, {hour: `numeric`, minute: `numeric`})}"
                   />
                 </label>
               </fieldset>
@@ -88,7 +114,7 @@ export default (card) => {
                     id="repeat-mo-5"
                     name="repeat"
                     value="mo"
-                    ${card._repeatingDays[days.Monday] ? `checked` : ``}
+                    ${this._repeatingDays[days.Monday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-mo-5"
                     >mo</label
@@ -99,7 +125,7 @@ export default (card) => {
                     id="repeat-tu-5"
                     name="repeat"
                     value="tu"
-                    ${card._repeatingDays[days.Tuesday] ? `checked` : ``}
+                    ${this._repeatingDays[days.Tuesday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-tu-5"
                     >tu</label
@@ -110,7 +136,7 @@ export default (card) => {
                     id="repeat-we-5"
                     name="repeat"
                     value="we"
-                    ${card._repeatingDays[days.Wednesday] ? `checked` : ``}
+                    ${this._repeatingDays[days.Wednesday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-we-5"
                     >we</label
@@ -121,7 +147,7 @@ export default (card) => {
                     id="repeat-th-5"
                     name="repeat"
                     value="th"
-                    ${card._repeatingDays[days.Thursday] ? `checked` : ``}
+                    ${this._repeatingDays[days.Thursday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-th-5"
                     >th</label
@@ -132,7 +158,7 @@ export default (card) => {
                     id="repeat-fr-5"
                     name="repeat"
                     value="fr"
-                    ${card._repeatingDays[days.Friday] ? `checked` : ``}
+                    ${this._repeatingDays[days.Friday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-fr-5"
                     >fr</label
@@ -143,7 +169,7 @@ export default (card) => {
                     name="repeat"
                     value="sa"
                     id="repeat-sa-5"
-                    ${card._repeatingDays[days.Saturday] ? `checked` : ``}
+                    ${this._repeatingDays[days.Saturday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-sa-5"
                     >sa</label
@@ -154,7 +180,7 @@ export default (card) => {
                     id="repeat-su-5"
                     name="repeat"
                     value="su"
-                    ${card._repeatingDays[days.Sunday] ? `checked` : ``}
+                    ${this._repeatingDays[days.Sunday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-su-5"
                     >su</label
@@ -165,7 +191,7 @@ export default (card) => {
 
             <div class="card__hashtag">
               <div class="card__hashtag-list">
-                ${formatHachtags(card._tags)}
+                ${formatHachtags(this._tags)}
               </div>
 
               <label>
@@ -186,7 +212,7 @@ export default (card) => {
               name="img"
             />
             <img
-              src="${card._picture}"
+              src="${this._picture}"
               alt="task picture"
               class="card__img"
             />
@@ -267,4 +293,14 @@ export default (card) => {
       </div>
     </form>
   </article>`;
-};
+  }
+
+  render() {
+    const newElement = document.createElement(`div`);
+    newElement.innerHTML = this.template;
+    console.log(newElement);
+    this._element = newElement.firstChild;
+    console.log(this._element);
+    return this._element;
+  }
+}
