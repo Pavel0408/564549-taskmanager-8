@@ -7,7 +7,7 @@ export class Task {
     this._repeatingDays = card.repeatingDays;
     this._element = null;
     this._editing = false;
-    this._id = ``;
+    this.id = ``;
     this.isDone = card.isDone;
     this._color = card.color;
     this.isFavorite = card.isFavorite;

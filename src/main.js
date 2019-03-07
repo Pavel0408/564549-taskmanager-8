@@ -40,7 +40,7 @@ const renderCards = (number) => {
   mockCards = generateCardsArray(number);
   mockCards.forEach((card, index) => {
     if (card) {
-      mockCards[index]._id = index;
+      mockCards[index].id = index;
       fragment.appendChild(card.render(getCardTemplate));
     }
   });
