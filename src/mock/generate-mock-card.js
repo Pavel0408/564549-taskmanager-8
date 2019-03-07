@@ -34,5 +34,6 @@ export const mockCard = function () {
       isDone: getRandomValue(mockArrays.boolArray)
     };
   };
+
   return new Task(mockData());
 };
