@@ -82,7 +82,6 @@ const buttonsClickHandler = (evt) => {
     board.replaceChild(mockCards[cardId].render(template), card);
     return;
   }
-
 };
 
 renderFilters();
