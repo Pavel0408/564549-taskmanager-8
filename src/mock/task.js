@@ -7,7 +7,7 @@ export class Task {
     this._repeatingDays = card.repeatingDays;
     this._element = null;
     this._editing = false;
-    this.id = ``;
+    this._id = ``;
     this.isDone = card.isDone;
     this._color = card.color;
     this.isFavorite = card.isFavorite;
@@ -19,9 +19,17 @@ export class Task {
     });
   }
 
+  get id() {
+    return this._id;
+  }
+
+  set id(id) {
+    this._id = id;
+  }
+
   render(getTemplate) {
     const newElement = document.createElement(`div`);
-    newElement.innerHTML = getTemplate(this);
+    newElement.innerHTML = getTemplate(this._color, this._isRepeating(), this.id, this._title, this._dueDate, this._repeatingDays, this._tags, this._picture);
     this._element = newElement.firstChild;
     return this._element;
   }
