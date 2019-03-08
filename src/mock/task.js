@@ -27,6 +27,6 @@ export class Task {
   }
 
   changeEditingStatus() {
-    this.__editing = !this.__editing;
+    this._editing = !this._editing;
   }
 }
