@@ -64,7 +64,7 @@ const buttonsClickHandler = (evt) => {
   if (button === `edit` || button === `save` || button === `delete`) {
     const card = evt.target.closest(`article`);
     const cardId = card.id;
-    let template = ``;
+    let template = null;
 
     if (button === `edit`) {
       template = getEditCardtemplate;
