@@ -8,6 +8,10 @@ import {
   getEditCardtemplate
 } from "./templates";
 
+import {
+  cardsById
+} from "./cards-by-id";
+
 const filtersNames = [
   `all`,
   `overdue`,
@@ -38,9 +42,8 @@ const renderCards = (number) => {
   mockCards = generateCardsArray(number);
   board.innerHTML = ``;
   mockCards = generateCardsArray(number);
-  mockCards.forEach((card, index) => {
+  mockCards.forEach((card) => {
     if (card) {
-      mockCards[index].id = index;
       fragment.appendChild(card.render(getCardTemplate));
     }
   });
@@ -74,12 +77,12 @@ const buttonsClickHandler = (evt) => {
 
     } else {
       card.remove();
-      mockCards[cardId] = null;
+      cardsById[cardId] = null;
       return;
     }
 
-    mockCards[cardId].changeEditingStatus();
-    board.replaceChild(mockCards[cardId].render(template), card);
+    cardsById[cardId].changeEditingStatus();
+    board.replaceChild(cardsById[cardId].render(template), card);
     return;
   }
 };

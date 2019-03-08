@@ -21,6 +21,10 @@ import {
   Task
 } from "./task";
 
+import {
+  cardsById
+} from "../cards-by-id";
+
 export const mockCard = function () {
   const mockData = () => {
     return {
@@ -35,5 +39,8 @@ export const mockCard = function () {
     };
   };
 
-  return new Task(mockData());
+  const task = new Task(mockData());
+  task.id = cardsById.newIndex;
+  cardsById.add(task);
+  return task;
 };
