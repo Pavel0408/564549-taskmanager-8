@@ -66,7 +66,7 @@ const buttonsClickHandler = (evt) => {
   const button = evt.target.textContent.trim();
   if (button === `edit` || button === `save` || button === `delete`) {
     const card = evt.target.closest(`article`);
-    const cardId = card.id;
+    const cardItem = cardsById[card.id];
     let template = null;
 
     if (button === `edit`) {
@@ -77,12 +77,13 @@ const buttonsClickHandler = (evt) => {
 
     } else {
       card.remove();
-      cardsById[cardId] = null;
+      cardItem = null;
       return;
     }
-    if (cardsById[cardId].changeEditingStatus && cardsById[cardId].render) {
-      cardsById[cardId].changeEditingStatus();
-      board.replaceChild(cardsById[cardId].render(template), card);
+
+    if (cardItem.changeEditingStatus && cardItem.render) {
+      cardItem.changeEditingStatus();
+      board.replaceChild(cardItem.render(template), card);
       return;
     }
   }
