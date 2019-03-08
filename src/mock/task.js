@@ -19,9 +19,9 @@ export class Task {
     });
   }
 
-  render(template) {
+  render(getTemplate) {
     const newElement = document.createElement(`div`);
-    newElement.innerHTML = template(this);
+    newElement.innerHTML = getTemplate(this);
     this._element = newElement.firstChild;
     return this._element;
   }
