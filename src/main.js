@@ -80,10 +80,11 @@ const buttonsClickHandler = (evt) => {
       cardsById[cardId] = null;
       return;
     }
-
-    cardsById[cardId].changeEditingStatus();
-    board.replaceChild(cardsById[cardId].render(template), card);
-    return;
+    if (cardsById[cardId].changeEditingStatus && cardsById[cardId].render) {
+      cardsById[cardId].changeEditingStatus();
+      board.replaceChild(cardsById[cardId].render(template), card);
+      return;
+    }
   }
 };
 
