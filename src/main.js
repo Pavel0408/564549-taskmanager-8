@@ -22,7 +22,6 @@ const filtersNames = [
   `archive`
 ];
 
-
 const board = document.querySelector(`.board__tasks`);
 const START_CARDS_COUNT = 7;
 
