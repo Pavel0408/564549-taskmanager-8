@@ -12,6 +12,10 @@ import {
   cardsById
 } from "./cards-by-id";
 
+import {
+  Task
+} from "./task";
+
 const filtersNames = [
   `all`,
   `overdue`,
@@ -41,11 +45,17 @@ const renderCards = (number) => {
   mockCards = generateCardsArray(number);
   board.innerHTML = ``;
   mockCards = generateCardsArray(number);
-  mockCards.forEach((card) => {
-    if (card) {
-      fragment.appendChild(card.render(getCardTemplate));
-    }
-  });
+  mockCards.map((mockData) => {
+    const task = new Task(mockData);
+    task.id = cardsById.newIndex;
+    cardsById.add(task);
+    return task;
+  })
+    .forEach((card) => {
+      if (card) {
+        fragment.appendChild(card.render(getCardTemplate));
+      }
+    });
   board.appendChild(fragment);
 };
 
