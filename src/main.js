@@ -76,7 +76,7 @@ const buttonsClickHandler = (evt) => {
 
     } else {
       card.remove();
-      cardItem = null;
+      cardsById[card.id] = null;
       return;
     }
 
