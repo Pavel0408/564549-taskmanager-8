@@ -80,7 +80,7 @@ const buttonsClickHandler = (evt) => {
       return;
     }
 
-    if (cardItem.changeEditingStatus && cardItem.render) {
+    if (cardItem && cardItem.changeEditingStatus && cardItem.render) {
       cardItem.changeEditingStatus();
       board.replaceChild(cardItem.render(template), card);
       return;
