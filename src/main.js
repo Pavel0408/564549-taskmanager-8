@@ -62,11 +62,14 @@ const filterClickHandler = (evt) => {
 
 const buttonsClickHandler = (evt) => {
   evt.preventDefault();
-  const button = evt.target.textContent.trim();
-  if (button === `edit` || button === `save` || button === `delete`) {
+
+  if (evt.target.classList.contains(`card__btn--edit`) || evt.target.classList.contains(`card__save`) ||
+    evt.target.classList.contains(`card__delete`)) {
     const card = evt.target.closest(`article`);
     const cardItem = cardsById[card.id];
     let template = null;
+
+    const button = evt.target.textContent.trim();
 
     if (button === `edit`) {
       template = getEditCardtemplate;

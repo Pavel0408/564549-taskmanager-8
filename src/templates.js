@@ -13,8 +13,8 @@ const monthFormatter = new Intl.DateTimeFormat(`en-US`, {
   month: `long`
 });
 
-export const getCardTemplate = (color, isRepeating, id, title, dueDate, repeatingDays, tags, picture) => {
-  return `<article class="card card--${color} ${isRepeating ? `card--repeat` : ``}" id="${id}">
+export const getCardTemplate = (card) => {
+  return `<article class="card card--${card.color} ${card.isRepeating ? `card--repeat` : ``}" id="${card.id}">
     <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__control">
@@ -44,7 +44,7 @@ export const getCardTemplate = (color, isRepeating, id, title, dueDate, repeatin
               class="card__text"
               placeholder="Start typing your text here..."
               name="text"
-            >${title}</textarea>
+            >${card.title}</textarea>
           </label>
         </div>
 
@@ -60,18 +60,18 @@ export const getCardTemplate = (color, isRepeating, id, title, dueDate, repeatin
                   <input
                     class="card__date"
                     type="text"
-                    placeholder="${dateFormatter.format(dueDate)} ${monthFormatter.format(dueDate)}"
+                    placeholder="${dateFormatter.format(card.dueDate)} ${monthFormatter.format(card.dueDate)}"
                     name="date"
-                    value = "${dateFormatter.format(dueDate)} ${monthFormatter.format(dueDate)}"
+                    value = "${dateFormatter.format(card.dueDate)} ${monthFormatter.format(card.dueDate)}"
                   />
                 </label>
                 <label class="card__input-deadline-wrap">
                   <input
                     class="card__time"
                     type="text"
-                    placeholder="${dueDate.toLocaleTimeString(`en-US`, {hour: `numeric`, minute: `numeric`})}"
+                    placeholder="${card.dueDate.toLocaleTimeString(`en-US`, {hour: `numeric`, minute: `numeric`})}"
                     name="time"
-                    value = "${dueDate.toLocaleTimeString(`en-US`, {hour: `numeric`, minute: `numeric`})}"
+                    value = "${card.dueDate.toLocaleTimeString(`en-US`, {hour: `numeric`, minute: `numeric`})}"
                   />
                 </label>
               </fieldset>
@@ -88,7 +88,7 @@ export const getCardTemplate = (color, isRepeating, id, title, dueDate, repeatin
                     id="repeat-mo-5"
                     name="repeat"
                     value="mo"
-                    ${repeatingDays[days.Monday] ? `checked` : ``}
+                    ${card.repeatingDays[days.Monday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-mo-5"
                     >mo</label
@@ -99,7 +99,7 @@ export const getCardTemplate = (color, isRepeating, id, title, dueDate, repeatin
                     id="repeat-tu-5"
                     name="repeat"
                     value="tu"
-                    ${repeatingDays[days.Tuesday] ? `checked` : ``}
+                    ${card.repeatingDays[days.Tuesday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-tu-5"
                     >tu</label
@@ -110,7 +110,7 @@ export const getCardTemplate = (color, isRepeating, id, title, dueDate, repeatin
                     id="repeat-we-5"
                     name="repeat"
                     value="we"
-                    ${repeatingDays[days.Wednesday] ? `checked` : ``}
+                    ${card.repeatingDays[days.Wednesday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-we-5"
                     >we</label
@@ -121,7 +121,7 @@ export const getCardTemplate = (color, isRepeating, id, title, dueDate, repeatin
                     id="repeat-th-5"
                     name="repeat"
                     value="th"
-                    ${repeatingDays[days.Thursday] ? `checked` : ``}
+                    ${card.repeatingDays[days.Thursday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-th-5"
                     >th</label
@@ -132,7 +132,7 @@ export const getCardTemplate = (color, isRepeating, id, title, dueDate, repeatin
                     id="repeat-fr-5"
                     name="repeat"
                     value="fr"
-                    ${repeatingDays[days.Friday] ? `checked` : ``}
+                    ${card.repeatingDays[days.Friday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-fr-5"
                     >fr</label
@@ -143,7 +143,7 @@ export const getCardTemplate = (color, isRepeating, id, title, dueDate, repeatin
                     name="repeat"
                     value="sa"
                     id="repeat-sa-5"
-                    ${repeatingDays[days.Saturday] ? `checked` : ``}
+                    ${card.repeatingDays[days.Saturday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-sa-5"
                     >sa</label
@@ -154,7 +154,7 @@ export const getCardTemplate = (color, isRepeating, id, title, dueDate, repeatin
                     id="repeat-su-5"
                     name="repeat"
                     value="su"
-                    ${repeatingDays[days.Sunday] ? `checked` : ``}
+                    ${card.repeatingDays[days.Sunday] ? `checked` : ``}
                   />
                   <label class="card__repeat-day" for="repeat-su-5"
                     >su</label
@@ -165,7 +165,7 @@ export const getCardTemplate = (color, isRepeating, id, title, dueDate, repeatin
 
             <div class="card__hashtag">
               <div class="card__hashtag-list">
-                ${formatHachtags(tags)}
+                ${formatHachtags(card.tags)}
               </div>
 
               <label>
@@ -186,7 +186,7 @@ export const getCardTemplate = (color, isRepeating, id, title, dueDate, repeatin
               name="img"
             />
             <img
-              src="${picture}"
+              src="${card.picture}"
               alt="task picture"
               class="card__img"
             />
@@ -269,8 +269,8 @@ export const getCardTemplate = (color, isRepeating, id, title, dueDate, repeatin
   </article>`;
 };
 
-export const getEditCardtemplate = (color, isRepeating, id, title, dueDate, repeatingDays, tags) => {
-  return `<article class="card card--edit card--${color} ${isRepeating ? `card--repeat` : ``}" id="${id}">
+export const getEditCardtemplate = (card) => {
+  return `<article class="card card--edit card--${card.color} ${card.isRepeating ? `card--repeat` : ``}" id="${card.id}">
     <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__control">
@@ -287,7 +287,7 @@ export const getEditCardtemplate = (color, isRepeating, id, title, dueDate, repe
 
         <div class="card__textarea-wrap">
           <label>
-            <textarea class="card__text" placeholder="Start typing your text here..." name="text">${title}</textarea>
+            <textarea class="card__text" placeholder="Start typing your text here..." name="text">${card.title}</textarea>
           </label>
         </div>
 
@@ -314,25 +314,25 @@ export const getEditCardtemplate = (color, isRepeating, id, title, dueDate, repe
 
               <fieldset class="card__repeat-days" disabled>
                 <div class="card__repeat-days-inner">
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-mo-5" name="repeat" value="mo" ${repeatingDays[days.Monday] ? `checked` : ``} />
+                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-mo-5" name="repeat" value="mo" ${card.repeatingDays[days.Monday] ? `checked` : ``} />
                   <label class="card__repeat-day" for="repeat-mo-5">mo</label>
 
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-tu-5" name="repeat" value="tu" ${repeatingDays[days.Tuesday] ? `checked` : ``} />
+                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-tu-5" name="repeat" value="tu" ${card.repeatingDays[days.Tuesday] ? `checked` : ``} />
                   <label class="card__repeat-day" for="repeat-tu-5">tu</label>
 
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-we-5" name="repeat" value="we" ${repeatingDays[days.Wednesday] ? `checked` : ``} />
+                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-we-5" name="repeat" value="we" ${card.repeatingDays[days.Wednesday] ? `checked` : ``} />
                   <label class="card__repeat-day" for="repeat-we-5" >w</label>
 
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-th-5" name="repeat" value="th" ${repeatingDays[days.Thursday] ? `checked` : ``} />
+                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-th-5" name="repeat" value="th" ${card.repeatingDays[days.Thursday] ? `checked` : ``} />
                   <label class="card__repeat-day" for="repeat-th-5">th</label>
 
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-fr-5" name="repeat" value="fr" ${repeatingDays[days.Friday] ? `checked` : ``} />
+                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-fr-5" name="repeat" value="fr" ${card.repeatingDays[days.Friday] ? `checked` : ``} />
                   <label class="card__repeat-day" for="repeat-fr-5" >fr</label>
 
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" name="repeat" value="sa" id="repeat-sa-5" ${repeatingDays[days.Saturday] ? `checked` : ``} />
+                  <input class="visually-hidden card__repeat-day-input" type="checkbox" name="repeat" value="sa" id="repeat-sa-5" ${card.repeatingDays[days.Saturday] ? `checked` : ``} />
                   <label class="card__repeat-day" for="repeat-sa-5">sa</label>
 
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-su-5" name="repeat" value="su" ${repeatingDays[days.Sunday] ? `checked` : ``} />
+                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-su-5" name="repeat" value="su" ${card.repeatingDays[days.Sunday] ? `checked` : ``} />
                   <label class="card__repeat-day" for="repeat-su-5" >su</label>
                 </div>
               </fieldset>
@@ -340,7 +340,7 @@ export const getEditCardtemplate = (color, isRepeating, id, title, dueDate, repe
 
             <div class="card__hashtag">
               <div class="card__hashtag-list">
-              ${formatHachtags(tags)}
+              ${formatHachtags(card.tags)}
               </div>
 
               <label>

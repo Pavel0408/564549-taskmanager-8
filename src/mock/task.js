@@ -29,7 +29,18 @@ export class Task {
 
   render(getTemplate) {
     const newElement = document.createElement(`div`);
-    newElement.innerHTML = getTemplate(this._color, this._isRepeating(), this.id, this._title, this._dueDate, this._repeatingDays, this._tags, this._picture);
+    const templateArguments = {
+      color: this._color,
+      isRepeating: this._isRepeating(),
+      id: this.id,
+      title: this._title,
+      dueDate: this._dueDate,
+      repeatingDays: this._repeatingDays,
+      tags: this._tags,
+      picture: this._picture
+    };
+
+    newElement.innerHTML = getTemplate(templateArguments);
     this._element = newElement.firstChild;
     return this._element;
   }
