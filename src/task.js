@@ -1,5 +1,10 @@
-export class Task {
+import {
+  Component
+} from "./component";
+
+export class Task extends Component {
   constructor(card) {
+    super();
     this._title = card.title;
     this._tags = card.tags;
     this._picture = card.picture;
@@ -11,20 +16,6 @@ export class Task {
     this.isDone = card.isDone;
     this._color = card.color;
     this.isFavorite = card.isFavorite;
-  }
-
-  _isRepeating() {
-    return Object.values(this._repeatingDays).some((day) => {
-      return day === true;
-    });
-  }
-
-  get id() {
-    return this._id;
-  }
-
-  set id(id) {
-    this._id = id;
   }
 
   render(getTemplate) {
@@ -43,9 +34,5 @@ export class Task {
     newElement.innerHTML = getTemplate(templateArguments);
     this._element = newElement.firstChild;
     return this._element;
-  }
-
-  changeEditingStatus() {
-    this._editing = !this._editing;
   }
 }
