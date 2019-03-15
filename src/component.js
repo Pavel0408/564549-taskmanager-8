@@ -5,15 +5,6 @@ export class Component {
     }
   }
 
-  _isRepeating() {
-    return Object.values(this._repeatingDays).some((day) => {
-      return day === true;
-    });
-  }
-
-  changeEditingStatus() {
-    this._editing = !this._editing;
-  }
   get id() {
     return this._id;
   }
@@ -22,11 +13,17 @@ export class Component {
     this._id = id;
   }
 
+  render() {
+    throw new Error(`You need to create a Task first.`);
+  }
+
   changeEditingStatus() {
     this._editing = !this._editing;
   }
 
-  render() {
-    throw new Error(`You need to create a Task first.`);
+  _isRepeating() {
+    return Object.values(this._repeatingDays).some((day) => {
+      return day === true;
+    });
   }
 }
