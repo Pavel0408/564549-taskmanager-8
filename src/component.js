@@ -22,8 +22,6 @@ export class Component {
   }
 
   _isRepeating() {
-    return Object.values(this._repeatingDays).some((day) => {
-      return day === true;
-    });
+    return Object.values(this._repeatingDays).some(Boolean);
   }
 }
