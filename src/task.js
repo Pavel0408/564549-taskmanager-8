@@ -5,6 +5,7 @@ import {
 export class Task extends Component {
   constructor(card) {
     super();
+
     this._title = card.title;
     this._tags = card.tags;
     this._picture = card.picture;
