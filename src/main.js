@@ -46,11 +46,11 @@ const renderCards = (number) => {
   board.innerHTML = ``;
   mockCards = generateCardsArray(number);
   mockCards.map((mockData) => {
-    const task = new Task(mockData);
-    task.id = cardsById.newIndex;
-    cardsById.add(task);
-    return task;
-  })
+      const task = new Task(mockData);
+      task.id = cardsById.newIndex;
+      cardsById.add(task);
+      return task;
+    })
     .forEach((card) => {
       if (card) {
         fragment.appendChild(card.render(getCardTemplate));
@@ -71,10 +71,11 @@ const filterClickHandler = (evt) => {
 };
 
 const buttonsClickHandler = (evt) => {
-  evt.preventDefault();
+
 
   if (evt.target.classList.contains(`card__btn--edit`) || evt.target.classList.contains(`card__save`) ||
     evt.target.classList.contains(`card__delete`)) {
+    evt.preventDefault();
     const card = evt.target.closest(`article`);
     const cardItem = cardsById[card.id];
     let template = null;

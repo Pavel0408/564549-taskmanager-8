@@ -17,6 +17,7 @@ export class Task extends Component {
     this.isDone = card.isDone;
     this._color = card.color;
     this.isFavorite = card.isFavorite;
+    this.isDate = true;
   }
 
   render(getTemplate) {
@@ -29,11 +30,13 @@ export class Task extends Component {
       dueDate: this._dueDate,
       repeatingDays: this._repeatingDays,
       tags: this._tags,
-      picture: this._picture
+      picture: this._picture,
+      isDate: this.isDate
     };
 
     newElement.innerHTML = getTemplate(templateArguments);
     this._element = newElement.firstChild;
+
     return this._element;
   }
 }

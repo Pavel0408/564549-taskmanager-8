@@ -85,56 +85,56 @@ export const getCardTemplate = (card) => {
                   <input
                     class="visually-hidden card__repeat-day-input"
                     type="checkbox"
-                    id="repeat-mo-5"
+                    id="repeat-mo-${card.id}"
                     name="repeat"
                     value="mo"
                     ${card.repeatingDays[days.Monday] ? `checked` : ``}
                   />
-                  <label class="card__repeat-day" for="repeat-mo-5"
+                  <label class="card__repeat-day" for="repeat-mo-${card.id}"
                     >mo</label
                   >
                   <input
                     class="visually-hidden card__repeat-day-input"
                     type="checkbox"
-                    id="repeat-tu-5"
+                    id="repeat-tu-${card.id}"
                     name="repeat"
                     value="tu"
                     ${card.repeatingDays[days.Tuesday] ? `checked` : ``}
                   />
-                  <label class="card__repeat-day" for="repeat-tu-5"
+                  <label class="card__repeat-day" for="repeat-tu-${card.id}"
                     >tu</label
                   >
                   <input
                     class="visually-hidden card__repeat-day-input"
                     type="checkbox"
-                    id="repeat-we-5"
+                    id="repeat-we-${card.id}"
                     name="repeat"
                     value="we"
                     ${card.repeatingDays[days.Wednesday] ? `checked` : ``}
                   />
-                  <label class="card__repeat-day" for="repeat-we-5"
+                  <label class="card__repeat-day" for="repeat-we-${card.id}"
                     >we</label
                   >
                   <input
                     class="visually-hidden card__repeat-day-input"
                     type="checkbox"
-                    id="repeat-th-5"
+                    id="repeat-th-${card.id}"
                     name="repeat"
                     value="th"
                     ${card.repeatingDays[days.Thursday] ? `checked` : ``}
                   />
-                  <label class="card__repeat-day" for="repeat-th-5"
+                  <label class="card__repeat-day" for="repeat-th-${card.id}"
                     >th</label
                   >
                   <input
                     class="visually-hidden card__repeat-day-input"
                     type="checkbox"
-                    id="repeat-fr-5"
+                    id="repeat-fr-${card.id}"
                     name="repeat"
                     value="fr"
                     ${card.repeatingDays[days.Friday] ? `checked` : ``}
                   />
-                  <label class="card__repeat-day" for="repeat-fr-5"
+                  <label class="card__repeat-day" for="repeat-fr-${card.id}"
                     >fr</label
                   >
                   <input
@@ -142,21 +142,21 @@ export const getCardTemplate = (card) => {
                     type="checkbox"
                     name="repeat"
                     value="sa"
-                    id="repeat-sa-5"
+                    id="repeat-sa-${card.id}"
                     ${card.repeatingDays[days.Saturday] ? `checked` : ``}
                   />
-                  <label class="card__repeat-day" for="repeat-sa-5"
+                  <label class="card__repeat-day" for="repeat-sa-${card.id}"
                     >sa</label
                   >
                   <input
                     class="visually-hidden card__repeat-day-input"
                     type="checkbox"
-                    id="repeat-su-5"
+                    id="repeat-su-${card.id}"
                     name="repeat"
                     value="su"
                     ${card.repeatingDays[days.Sunday] ? `checked` : ``}
                   />
-                  <label class="card__repeat-day" for="repeat-su-5"
+                  <label class="card__repeat-day" for="repeat-su-${card.id}"
                     >su</label
                   >
                 </div>
@@ -197,62 +197,62 @@ export const getCardTemplate = (card) => {
             <div class="card__colors-wrap">
               <input
                 type="radio"
-                id="color-black-5"
+                id="color-black-${card.id}"
                 class="card__color-input card__color-input--black visually-hidden"
                 name="color"
                 value="black"
               />
               <label
-                for="color-black-5"
+                for="color-black-${card.id}"
                 class="card__color card__color--black"
                 >black</label
               >
               <input
                 type="radio"
-                id="color-yellow-5"
+                id="color-yellow-${card.id}"
                 class="card__color-input card__color-input--yellow visually-hidden"
                 name="color"
                 value="yellow"
               />
               <label
-                for="color-yellow-5"
+                for="color-yellow-${card.id}"
                 class="card__color card__color--yellow"
                 >yellow</label
               >
               <input
                 type="radio"
-                id="color-blue-5"
+                id="color-blue-${card.id}"
                 class="card__color-input card__color-input--blue visually-hidden"
                 name="color"
                 value="blue"
               />
               <label
-                for="color-blue-5"
+                for="color-blue-${card.id}"
                 class="card__color card__color--blue"
                 >blue</label
               >
               <input
                 type="radio"
-                id="color-green-5"
+                id="color-green-${card.id}"
                 class="card__color-input card__color-input--green visually-hidden"
                 name="color"
                 value="green"
                 checked
               />
               <label
-                for="color-green-5"
+                for="color-green-${card.id}"
                 class="card__color card__color--green"
                 >green</label
               >
               <input
                 type="radio"
-                id="color-pink-5"
+                id="color-pink-${card.id}"
                 class="card__color-input card__color-input--pink visually-hidden"
                 name="color"
                 value="pink"
               />
               <label
-                for="color-pink-5"
+                for="color-pink-${card.id}"
                 class="card__color card__color--pink"
                 >pink</label
               >
@@ -295,10 +295,10 @@ export const getEditCardtemplate = (card) => {
           <div class="card__details">
             <div class="card__dates">
               <button class="card__date-deadline-toggle" type="button">
-                date: <span class="card__date-status">no</span>
+                date: <span class="card__date-status">${card.isDate ? `yes` : `no`}</span>
               </button>
 
-              <fieldset class="card__date-deadline" disabled>
+              <fieldset class="card__date-deadline" ${!card.isDate && `disabled`}>
                 <label class="card__input-deadline-wrap">
                   <input class="card__date" type="text" placeholder="23 September" name="date" />
                 </label>
@@ -309,31 +309,31 @@ export const getEditCardtemplate = (card) => {
               </fieldset>
 
               <button class="card__repeat-toggle" type="button">
-                repeat: <span class="card__repeat-status">no</span>
+                repeat: <span class="card__repeat-status">${card.isRepeating ? `yes` : `no`}</span>
               </button>
 
-              <fieldset class="card__repeat-days" disabled>
+              <fieldset class="card__repeat-days" ${!card.isRepeating && `disabled`}>
                 <div class="card__repeat-days-inner">
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-mo-5" name="repeat" value="mo" ${card.repeatingDays[days.Monday] ? `checked` : ``} />
-                  <label class="card__repeat-day" for="repeat-mo-5">mo</label>
+                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-mo-${card.id}" name="repeat" value="mo" ${card.repeatingDays[days.Monday] ? `checked` : ``} />
+                  <label class="card__repeat-day" for="repeat-mo-${card.id}">mo</label>
 
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-tu-5" name="repeat" value="tu" ${card.repeatingDays[days.Tuesday] ? `checked` : ``} />
-                  <label class="card__repeat-day" for="repeat-tu-5">tu</label>
+                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-tu-${card.id}" name="repeat" value="tu" ${card.repeatingDays[days.Tuesday] ? `checked` : ``} />
+                  <label class="card__repeat-day" for="repeat-tu-${card.id}">tu</label>
 
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-we-5" name="repeat" value="we" ${card.repeatingDays[days.Wednesday] ? `checked` : ``} />
-                  <label class="card__repeat-day" for="repeat-we-5" >w</label>
+                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-we-${card.id}" name="repeat" value="we" ${card.repeatingDays[days.Wednesday] ? `checked` : ``} />
+                  <label class="card__repeat-day" for="repeat-we-${card.id}" >w</label>
 
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-th-5" name="repeat" value="th" ${card.repeatingDays[days.Thursday] ? `checked` : ``} />
-                  <label class="card__repeat-day" for="repeat-th-5">th</label>
+                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-th-${card.id}" name="repeat" value="th" ${card.repeatingDays[days.Thursday] ? `checked` : ``} />
+                  <label class="card__repeat-day" for="repeat-th-${card.id}">th</label>
 
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-fr-5" name="repeat" value="fr" ${card.repeatingDays[days.Friday] ? `checked` : ``} />
-                  <label class="card__repeat-day" for="repeat-fr-5" >fr</label>
+                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-fr-${card.id}" name="repeat" value="fr" ${card.repeatingDays[days.Friday] ? `checked` : ``} />
+                  <label class="card__repeat-day" for="repeat-fr-${card.id}" >fr</label>
 
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" name="repeat" value="sa" id="repeat-sa-5" ${card.repeatingDays[days.Saturday] ? `checked` : ``} />
-                  <label class="card__repeat-day" for="repeat-sa-5">sa</label>
+                  <input class="visually-hidden card__repeat-day-input" type="checkbox" name="repeat" value="sa" id="repeat-sa-${card.id}" ${card.repeatingDays[days.Saturday] ? `checked` : ``} />
+                  <label class="card__repeat-day" for="repeat-sa-${card.id}">sa</label>
 
-                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-su-5" name="repeat" value="su" ${card.repeatingDays[days.Sunday] ? `checked` : ``} />
-                  <label class="card__repeat-day" for="repeat-su-5" >su</label>
+                  <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-su-${card.id}" name="repeat" value="su" ${card.repeatingDays[days.Sunday] ? `checked` : ``} />
+                  <label class="card__repeat-day" for="repeat-su-${card.id}" >su</label>
                 </div>
               </fieldset>
             </div>
@@ -354,25 +354,25 @@ export const getEditCardtemplate = (card) => {
           </label>
 
           <div class="card__colors-inner">
-            <h3 class="card__colors-title">Color</h3>
-            <div class="card__colors-wrap">
-              <input type="radio" id="color-black-5" class="card__color-input card__color-input--black visually-hidden" name="color" value="black" />
-              <label for="color-black-5" class="card__color card__color--black">black</label>
+              <h3 class="card__colors-title">Color</h3>
+              <div class="card__colors-wrap">
+                <input type="radio" id="color-black-${card.id}" class="card__color-input card__color-input--black visually-hidden" name="color" value="black" ${card.color === `black` && `checked`}/>
+                <label for="color-black-${card.id}" class="card__color card__color--black">black</label>
 
-              <input type="radio" id="color-yellow-5" class="card__color-input card__color-input--yellow visually-hidden" name="color" value="yellow" />
-              <label for="color-yellow-5" class="card__color card__color--yellow">yellow</label>
+                <input type="radio" id="color-yellow-${card.id}" class="card__color-input card__color-input--yellow visually-hidden" name="color" value="yellow" ${card.color === `yellow` && `checked`} />
+                <label for="color-yellow-${card.id}" class="card__color card__color--yellow">yellow</label>
 
-              <input type="radio" id="color-blue-5" class="card__color-input card__color-input--blue visually-hidden" name="color" value="blue" />
-              <label for="color-blue-5" class="card__color card__color--blue">blue</label>
+                <input type="radio" id="color-blue-${card.id}" class="card__color-input card__color-input--blue visually-hidden" name="color" value="blue" ${card.color === `blue` && `checked`} />
+                <label for="color-blue-${card.id}" class="card__color card__color--blue">blue</label>
 
-              <input type="radio" id="color-green-5" class="card__color-input card__color-input--green visually-hidden" name="color" value="green" checked />
-              <label for="color-green-5" class="card__color card__color--green">green</label>
+                <input type="radio" id="color-green-${card.id}" class="card__color-input card__color-input--green visually-hidden" name="color" value="green" ${card.color === `green` && `checked`} />
+                <label for="color-green-${card.id}" class="card__color card__color--green">green</label>
 
-              <input type="radio" id="color-pink-5" class="card__color-input card__color-input--pink visually-hidden" name="color" value="pink" />
-              <label for="color-pink-5" class="card__color card__color--pink">pink</label>
+                <input type="radio" id="color-pink-${card.id}" class="card__color-input card__color-input--pink visually-hidden" name="color" value="pink" ${card.color === `pink` && `checked`} />
+                <label for="color-pink-${card.id}" class="card__color card__color--pink">pink</label>
+              </div>
             </div>
           </div>
-        </div>
 
         <div class="card__status-btns">
           <button class="card__save" type="submit">save</button>
