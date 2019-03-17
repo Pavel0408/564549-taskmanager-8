@@ -309,10 +309,10 @@ export const getEditCardtemplate = (card) => {
               </fieldset>
 
               <button class="card__repeat-toggle" type="button">
-                repeat: <span class="card__repeat-status">${card.isRepeating ? `yes` : `no`}</span>
+                repeat: <span class="card__repeat-status">${card.isRepeat ? `yes` : `no`}</span>
               </button>
 
-              <fieldset class="card__repeat-days" ${!card.isRepeating && `disabled`}>
+              <fieldset class="card__repeat-days" ${!card.isRepeat && `disabled`}>
                 <div class="card__repeat-days-inner">
                   <input class="visually-hidden card__repeat-day-input" type="checkbox" id="repeat-mo-${card.id}" name="repeat" value="mo" ${card.repeatingDays[days.Monday] ? `checked` : ``} />
                   <label class="card__repeat-day" for="repeat-mo-${card.id}">mo</label>

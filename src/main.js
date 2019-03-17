@@ -4,8 +4,7 @@ import {
 } from "./mock/generate-mock-cards-array";
 
 import {
-  getCardTemplate,
-  getEditCardtemplate
+  getCardTemplate
 } from "./templates";
 
 import {
@@ -46,11 +45,11 @@ const renderCards = (number) => {
   board.innerHTML = ``;
   mockCards = generateCardsArray(number);
   mockCards.map((mockData) => {
-      const task = new Task(mockData);
-      task.id = cardsById.newIndex;
-      cardsById.add(task);
-      return task;
-    })
+    const task = new Task(mockData);
+    task.id = cardsById.newIndex;
+    cardsById.add(task);
+    return task;
+  })
     .forEach((card) => {
       if (card) {
         fragment.appendChild(card.render(getCardTemplate));
@@ -72,34 +71,62 @@ const filterClickHandler = (evt) => {
 
 const buttonsClickHandler = (evt) => {
 
+  if (evt.target.classList.contains(`card__btn--edit`) ||
+    evt.target.classList.contains(`card__delete`) || evt.target.classList.contains(`card__date-status`) ||
+    evt.target.classList.contains(`card__date-deadline-toggle`) || evt.target.classList.contains(`card__repeat-status`) ||
+    evt.target.classList.contains(`card__repeat-toggle`) ||
+    evt.target.classList.contains(`card__color`)) {
 
-  if (evt.target.classList.contains(`card__btn--edit`) || evt.target.classList.contains(`card__save`) ||
-    evt.target.classList.contains(`card__delete`)) {
-    evt.preventDefault();
     const card = evt.target.closest(`article`);
     const cardItem = cardsById[card.id];
-    let template = null;
-
     const button = evt.target.textContent.trim();
 
-    if (button === `edit`) {
-      template = getEditCardtemplate;
+    evt.preventDefault();
 
-    } else if (button === `save`) {
-      template = getCardTemplate;
-
-    } else {
+    if (button === `delete`) {
       card.remove();
       cardsById[card.id] = null;
       return;
     }
 
-    if (cardItem && cardItem.changeEditingStatus && cardItem.render) {
-      cardItem.changeEditingStatus();
-      board.replaceChild(cardItem.render(template), card);
-      return;
+    if (cardItem && cardItem.changeEditingStatus && cardItem.render && cardItem.changeDateStatus) {
+
+      if (evt.target.classList.contains(`card__date-status`) ||
+        evt.target.classList.contains(`card__date-deadline-toggle`)) {
+        cardItem.changeDateStatus();
+      }
+
+      if (evt.target.classList.contains(`card__repeat-status`) ||
+        evt.target.classList.contains(`card__repeat-toggle`)) {
+        cardItem.changeRepeatStatus();
+      }
+
+      if (evt.target.classList.contains(`card__color`)) {
+        const color = evt.target.textContent;
+        cardItem.changeColor(color);
+      }
+
+      if (button === `edit`) {
+        cardItem.changeEditingStatus();
+      }
+
+      board.replaceChild(cardItem.render(), card);
     }
   }
+};
+
+const buttonSubmitHandler = (evt) => {
+  evt.target.classList.contains(`card__save`);
+  evt.preventDefault();
+
+  const card = evt.target.closest(`article`);
+  const cardItem = cardsById[card.id];
+
+  const formData = new FormData(card.querySelector(`.card__form`));
+  const newData = cardItem._processForm(formData);
+  cardItem.update(newData);
+  cardItem.changeEditingStatus();
+  board.replaceChild(cardItem.render(), card);
 };
 
 renderFilters();
@@ -107,3 +134,4 @@ renderCards(START_CARDS_COUNT);
 
 document.body.addEventListener(`click`, filterClickHandler);
 document.body.addEventListener(`click`, buttonsClickHandler);
+document.body.addEventListener(`submit`, buttonSubmitHandler);
