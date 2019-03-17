@@ -5,7 +5,7 @@ export const formatHachtags = (hachtagsSet) => {
     <input
       type="hidden"
       name="hashtag"
-      value="repeat"
+      value="${hachtag}"
       class="card__hashtag-hidden-input"
     />
     <button type="button" class="card__hashtag-name">
@@ -16,5 +16,6 @@ export const formatHachtags = (hachtagsSet) => {
     </button>
   </span>`;
   });
+
   return fragment;
 };

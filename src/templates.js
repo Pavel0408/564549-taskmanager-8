@@ -300,11 +300,11 @@ export const getEditCardtemplate = (card) => {
 
               <fieldset class="card__date-deadline" ${!card.isDate && `disabled`}>
                 <label class="card__input-deadline-wrap">
-                  <input class="card__date" type="text" placeholder="23 September" name="date" />
+                  <input class="card__date" type="text" placeholder="23 September" name="date" value="${dateFormatter.format(card.dueDate)} ${monthFormatter.format(card.dueDate)}" />
                 </label>
 
                 <label class="card__input-deadline-wrap">
-                  <input class="card__time" type="text" placeholder="11:15 PM" name="time" />
+                  <input class="card__time" type="text" placeholder="11:15 PM" name="time" value="${card.dueDate.toLocaleTimeString(`en-US`, {hour: `numeric`, minute: `numeric`})}" />
                 </label>
               </fieldset>
 

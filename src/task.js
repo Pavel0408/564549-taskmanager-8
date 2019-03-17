@@ -7,10 +7,7 @@ import {
   Component
 } from "./component";
 
-import {
-  days,
-  daysShort
-} from "./mock/repeating-days";
+import flatpickr from "flatpickr";
 
 export class Task extends Component {
   constructor(card) {
@@ -49,46 +46,38 @@ export class Task extends Component {
     newElement.innerHTML = getTemplates(templateArguments);
     this._element = newElement.firstChild;
 
+    // Не работает
+    if (this.isDate && this._editing) {
+      flatpickr(this._element.querySelector(`.card__date`), {
+        altInput: true,
+        altFormat: `j F`,
+        dateFormat: `j F`
+      });
+
+      flatpickr(this._element.querySelector(`.card__time`), {
+        enableTime: true,
+        noCalendar: true,
+        altInput: true,
+        altFormat: `h:i K`,
+        dateFormat: `h:i K`
+      });
+    }
+
     return this._element;
   }
 
   update(data) {
-    console.log(this._repeatingDays);
     Object.keys(this._repeatingDays).forEach((day) => {
-      console.log(day);
       this._repeatingDays[day] = data.repeatingDays[day.toLowerCase()];
-      console.log(this);
-      delete data.repeatingDays[days[day]];
     });
-    console.log(this);
+
     this._title = data.title;
     this._tags = data.tags;
     this._color = data.color;
-
-    console.log(data.repeatingDays);
     this._dueDate = data.dueDate;
   }
 
-  static createMapper(target) {
-    return {
-      hashtag: (value) => target.tags.add(value),
-      text: (value) => target.title = value,
-      color: (value) => target.color = value,
-      repeat: (value) => target.repeatingDays[value] = true,
-      date: (value) => target.dueDate[value],
-
-    }
-  }
-
-  onSubmit(newObject) {
-    this.title = newObject.title;
-    this.tags = newObject.tags;
-    this.color = newObject.color;
-    this.repeatingDays = newObject.repeatingDays;
-    this.dueDate = newObject.dueDate;
-  }
-
-  _processForm(formData) {
+  processForm(formData) {
     const entry = {
       title: ``,
       color: ``,
@@ -115,5 +104,25 @@ export class Task extends Component {
     }
 
     return entry;
+  }
+
+  static createMapper(target) {
+    return {
+      hashtag: (value) => {
+        target.tags.add(value);
+      },
+      text: (value) => {
+        target.title = value;
+      },
+      color: (value) => {
+        target.color = value;
+      },
+      repeat: (value) => {
+        target.repeatingDays[value] = true;
+      },
+      date: (value) => {
+        target.dueDate[value] = value;
+      }
+    };
   }
 }
