@@ -115,6 +115,7 @@ const buttonsClickHandler = (evt) => {
 
       // Перерисовываем карточку
       board.replaceChild(cardItem.render(), card);
+      cardItem.addflatpickr();
     }
   }
 };

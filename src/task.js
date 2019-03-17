@@ -46,22 +46,8 @@ export class Task extends Component {
     newElement.innerHTML = getTemplates(templateArguments);
     this._element = newElement.firstChild;
 
-    // Не работает
-    if (this.isDate && this._editing) {
-      flatpickr(this._element.querySelector(`.card__date`), {
-        altInput: true,
-        altFormat: `j F`,
-        dateFormat: `j F`
-      });
 
-      flatpickr(this._element.querySelector(`.card__time`), {
-        enableTime: true,
-        noCalendar: true,
-        altInput: true,
-        altFormat: `h:i K`,
-        dateFormat: `h:i K`
-      });
-    }
+
 
     return this._element;
   }
@@ -104,6 +90,24 @@ export class Task extends Component {
     }
 
     return entry;
+  }
+
+  addflatpickr() {
+    if (this.isDate && this._editing) {
+      flatpickr(this._element.querySelector(`.card__date`), {
+        altInput: true,
+        altFormat: `j F`,
+        dateFormat: `j F`
+      });
+
+      flatpickr(this._element.querySelector(`.card__time`), {
+        enableTime: true,
+        noCalendar: true,
+        altInput: true,
+        altFormat: `h:i K`,
+        dateFormat: `h:i K`
+      });
+    }
   }
 
   static createMapper(target) {
