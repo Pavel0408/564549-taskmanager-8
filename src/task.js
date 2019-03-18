@@ -7,6 +7,10 @@ import {
   Component
 } from "./component";
 
+import {
+  monthes
+} from "./constats";
+
 import flatpickr from "flatpickr";
 
 export class Task extends Component {
@@ -121,7 +125,10 @@ export class Task extends Component {
         target.repeatingDays[value] = true;
       },
       date: (value) => {
-        target.dueDate[value] = value;
+        value = value.split(` `);
+        let [day, month] = value;
+        month = monthes.indexOf(month);
+        target.dueDate.setMonth(month, day);
       }
     };
   }
