@@ -11,6 +11,8 @@ import {
   Task
 } from "./task";
 
+import flatpickr from "flatpickr";
+
 const filtersNames = [
   `all`,
   `overdue`,
@@ -111,6 +113,11 @@ const buttonsClickHandler = (evt) => {
       // Обработчик кнопки EDIT
       if (button === `edit`) {
         cardItem.changeEditingStatus();
+        flatpickr(`.card__date`, {
+          altInput: true,
+          altFormat: `j F`,
+          dateFormat: `j F`
+        });
       }
 
       // Перерисовываем карточку
@@ -142,3 +149,5 @@ renderCards(START_CARDS_COUNT);
 document.body.addEventListener(`click`, filterClickHandler);
 document.body.addEventListener(`click`, buttonsClickHandler);
 document.body.addEventListener(`submit`, buttonSubmitHandler);
+
+
