@@ -47,7 +47,7 @@ export class Task extends Component {
     this._element = newElement.firstChild;
 
     // Не работает
-    if (this.isDate && this._editing) {
+    if (this._isDate && this._editing) {
       flatpickr(this._element.querySelector(`.card__date`), {
         altInput: true,
         altFormat: `j F`,
