@@ -128,7 +128,24 @@ export class Task extends Component {
         value = value.split(` `);
         let [day, month] = value;
         month = monthes.indexOf(month);
+
         target.dueDate.setMonth(month, day);
+      },
+      time: (value) => {
+        value = value.split(` `);
+        let [time, timeAdd] = value;
+        time = time.split(`:`);
+        console.log(time);
+        let [hours, minutes] = time;
+        hours = parseInt(hours, 10);
+        minutes = parseInt(minutes, 10);
+        if (timeAdd === `PM`) {
+          hours += 12;
+        }
+
+        target.dueDate.setHours(hours, minutes);
+        console.log(hours, minutes);
+
       }
     };
   }

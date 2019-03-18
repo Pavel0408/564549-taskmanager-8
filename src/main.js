@@ -130,6 +130,7 @@ const buttonSubmitHandler = (evt) => {
 
   if (cardItem && cardItem.processForm && cardItem.changeEditingStatus && cardItem.render) {
     const newData = cardItem.processForm(formData);
+    console.log(formData.getAll(`time`));
     cardItem.update(newData);
     cardItem.changeEditingStatus();
     board.replaceChild(cardItem.render(), card);
