@@ -23,7 +23,7 @@ export class Component {
   }
 
   changeDateStatus() {
-    this.isDate = !this.isDate;
+    this._isDate = !this._isDate;
   }
 
   changeColor(color) {

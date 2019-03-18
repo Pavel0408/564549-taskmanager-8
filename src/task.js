@@ -24,7 +24,7 @@ export class Task extends Component {
     this.isDone = card.isDone;
     this._color = card.color;
     this.isFavorite = card.isFavorite;
-    this.isDate = true;
+    this._isDate = true;
     this._isRepeat = true;
   }
 
@@ -39,7 +39,7 @@ export class Task extends Component {
       repeatingDays: this._repeatingDays,
       tags: this._tags,
       picture: this._picture,
-      isDate: this.isDate,
+      isDate: this._isDate,
       isRepeat: this._isRepeat
     };
 
