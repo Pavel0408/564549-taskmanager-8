@@ -135,8 +135,8 @@ export class Task extends Component {
         value = value.split(` `);
         let [time, timeAdd] = value;
         time = time.split(`:`);
-        console.log(time);
         let [hours, minutes] = time;
+
         hours = parseInt(hours, 10);
         minutes = parseInt(minutes, 10);
         if (timeAdd === `PM`) {
@@ -144,8 +144,6 @@ export class Task extends Component {
         }
 
         target.dueDate.setHours(hours, minutes);
-        console.log(hours, minutes);
-
       }
     };
   }
