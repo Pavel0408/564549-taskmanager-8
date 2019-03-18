@@ -48,7 +48,7 @@ export class Task extends Component {
 
     // Не работает
     if (this._isDate && this._editing) {
-      flatpickr(`.card__date`, {
+      flatpickr(this._element.querySelector(`.card__date`), {
         altInput: true,
         altFormat: `j F`,
         dateFormat: `j F`
