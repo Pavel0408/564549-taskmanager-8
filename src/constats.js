@@ -15,18 +15,3 @@ export const colors = [
   `green`,
   `pink`
 ];
-
-export const monthes = [
-  `January`,
-  `February`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`
-];

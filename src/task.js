@@ -66,11 +66,11 @@ export class Task extends Component {
   }
 
   update(data) {
-    this._repeatingDays = data.repeatingDays;
+    this._repeatingDays = Object.assign(data.repeatingDays);
     this._title = data.title;
-    this._tags = data.tags;
+    this._tags = new Set(data.tags);
     this._color = data.color;
-    this._dueDate = data.dueDate;
+    this._dueDate = new Date(data.dueDate);
   }
 
   static parseForm(formData) {
