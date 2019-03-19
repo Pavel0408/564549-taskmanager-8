@@ -122,8 +122,10 @@ const buttonSubmitHandler = (evt) => {
 
   if (cardItem && cardItem.processForm && cardItem.changeEditingStatus && cardItem.render) {
     const newData = cardItem.processForm(formData);
+
     cardItem.update(newData);
     cardItem.changeEditingStatus();
+
     board.replaceChild(cardItem.render(), card);
   }
 };
