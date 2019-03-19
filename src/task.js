@@ -7,10 +7,6 @@ import {
   Component
 } from "./component";
 
-import {
-  monthes
-} from "./constats";
-
 import flatpickr from "flatpickr";
 
 export class Task extends Component {
@@ -70,80 +66,49 @@ export class Task extends Component {
   }
 
   update(data) {
-    Object.keys(this._repeatingDays).forEach((day) => {
-      this._repeatingDays[day] = data.repeatingDays[day.toLowerCase()];
-    });
-
+    this._repeatingDays = data.repeatingDays;
     this._title = data.title;
     this._tags = data.tags;
     this._color = data.color;
     this._dueDate = data.dueDate;
   }
 
-  processForm(formData) {
+  static processForm(formData) {
+    const repeatingDays = formData.getAll(`repeat`);
+
     const entry = {
-      title: ``,
-      color: ``,
-      tags: new Set(),
-      dueDate: new Date(),
+      title: formData.get(`text`),
+      color: formData.get(`color`),
+      tags: new Set(formData.getAll(`hashtag`)),
+      dueDate: new Date(formData.get(`date`)),
       repeatingDays: {
-        'mo': false,
-        'tu': false,
-        'we': false,
-        'th': false,
-        'fr': false,
-        'sa': false,
-        'su': false,
+        'Mo': (repeatingDays.indexOf(`mo`) !== -1),
+        'Tu': (repeatingDays.indexOf(`tu`) !== -1),
+        'We': (repeatingDays.indexOf(`we`) !== -1),
+        'Th': (repeatingDays.indexOf(`th`) !== -1),
+        'Fr': (repeatingDays.indexOf(`fr`) !== -1),
+        'Sa': ((repeatingDays.indexOf(`sa`) !== -1)),
+        'Su': (repeatingDays.indexOf(`su`) !== -1),
       }
     };
 
-    const taskMapper = Task.createMapper(entry);
+    const setTime = (value) => {
+      value = value.split(` `);
+      let [time, timeAdd] = value;
+      time = time.split(`:`);
+      let [hours, minutes] = time;
 
-    for (const pair of formData.entries()) {
-      const [property, value] = pair;
-      if (taskMapper[property]) {
-        taskMapper[property](value);
+      hours = parseInt(hours, 10);
+      minutes = parseInt(minutes, 10);
+      if (timeAdd === `PM`) {
+        hours += 12;
       }
-    }
+
+      entry.dueDate.setHours(hours, minutes);
+    };
+
+    setTime(formData.get(`time`));
 
     return entry;
-  }
-
-  static createMapper(target) {
-    return {
-      hashtag: (value) => {
-        target.tags.add(value);
-      },
-      text: (value) => {
-        target.title = value;
-      },
-      color: (value) => {
-        target.color = value;
-      },
-      repeat: (value) => {
-        target.repeatingDays[value] = true;
-      },
-      date: (value) => {
-        value = value.split(` `);
-        let [day, month] = value;
-        month = monthes.indexOf(month);
-
-        target.dueDate.setMonth(month, day);
-      },
-      time: (value) => {
-        value = value.split(` `);
-        let [time, timeAdd] = value;
-        time = time.split(`:`);
-        let [hours, minutes] = time;
-
-        hours = parseInt(hours, 10);
-        minutes = parseInt(minutes, 10);
-        if (timeAdd === `PM`) {
-          hours += 12;
-        }
-
-        target.dueDate.setHours(hours, minutes);
-      }
-    };
   }
 }

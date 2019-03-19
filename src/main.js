@@ -119,9 +119,10 @@ const buttonSubmitHandler = (evt) => {
   const card = evt.target.closest(`article`);
   const cardItem = cardsById[card.id];
   const formData = new FormData(card.querySelector(`.card__form`));
+  console.log(formData.getAll(`repeat`));
 
-  if (cardItem && cardItem.processForm && cardItem.changeEditingStatus && cardItem.render) {
-    const newData = cardItem.processForm(formData);
+  if (cardItem && Task.processForm && cardItem.changeEditingStatus && cardItem.render) {
+    const newData = Task.processForm(formData);
 
     cardItem.update(newData);
     cardItem.changeEditingStatus();
