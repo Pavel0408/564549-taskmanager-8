@@ -114,8 +114,6 @@ const buttonsClickHandler = (evt) => {
 };
 
 const buttonSubmitHandler = (evt) => {
-  evt.target.classList.contains(`card__save`);
-
   evt.preventDefault();
 
   const card = evt.target.closest(`article`);
