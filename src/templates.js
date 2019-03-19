@@ -14,11 +14,11 @@ const monthFormatter = new Intl.DateTimeFormat(`en-US`, {
 });
 
 export const getCardTemplate = (card) => {
-  return `<article class="card card--${card.color} ${card.isRepeating ? `card--repeat` : ``}" id="${card.id}">
+  return `<article class="card card--${card.color} ${card.isRepeating ? `card--repeat` : ``}" id="${card.id}" data-id="card">
     <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__control">
-          <button type="button" class="card__btn card__btn--edit">
+          <button type="button" class="card__btn card__btn--edit" data-id="edit">
             edit
           </button>
           <button type="button" class="card__btn card__btn--archive">
@@ -51,8 +51,8 @@ export const getCardTemplate = (card) => {
         <div class="card__settings">
           <div class="card__details">
             <div class="card__dates">
-              <button class="card__date-deadline-toggle" type="button">
-                date: <span class="card__date-status">no</span>
+              <button class="card__date-deadline-toggle" type="button" data-id="date-status">
+                date: <span class="card__date-status" data-id="date-status">no</span>
               </button>
 
               <fieldset class="card__date-deadline">
@@ -76,8 +76,8 @@ export const getCardTemplate = (card) => {
                 </label>
               </fieldset>
 
-              <button class="card__repeat-toggle" type="button">
-                repeat:<span class="card__repeat-status">no</span>
+              <button class="card__repeat-toggle" type="button" data-id="repeat-status">
+                repeat:<span class="card__repeat-status" data-id="repeat-status">no</span>
               </button>
 
               <fieldset class="card__repeat-days">
@@ -201,11 +201,11 @@ export const getCardTemplate = (card) => {
                 class="card__color-input card__color-input--black visually-hidden"
                 name="color"
                 value="black"
-              />
+              data-id="color-input"/>
               <label
                 for="color-black-${card.id}"
                 class="card__color card__color--black"
-                >black</label
+                data-id="color-input">black</label
               >
               <input
                 type="radio"
@@ -216,7 +216,7 @@ export const getCardTemplate = (card) => {
               />
               <label
                 for="color-yellow-${card.id}"
-                class="card__color card__color--yellow"
+                class="card__color card__color--yellow" data-id="color-input"
                 >yellow</label
               >
               <input
@@ -228,7 +228,7 @@ export const getCardTemplate = (card) => {
               />
               <label
                 for="color-blue-${card.id}"
-                class="card__color card__color--blue"
+                class="card__color card__color--blue" data-id="color-input"
                 >blue</label
               >
               <input
@@ -241,7 +241,7 @@ export const getCardTemplate = (card) => {
               />
               <label
                 for="color-green-${card.id}"
-                class="card__color card__color--green"
+                class="card__color card__color--green" data-id="color-input"
                 >green</label
               >
               <input
@@ -253,7 +253,7 @@ export const getCardTemplate = (card) => {
               />
               <label
                 for="color-pink-${card.id}"
-                class="card__color card__color--pink"
+                class="card__color card__color--pink" data-id="color-input"
                 >pink</label
               >
             </div>
@@ -262,7 +262,7 @@ export const getCardTemplate = (card) => {
 
         <div class="card__status-btns">
           <button class="card__save" type="submit">save</button>
-          <button class="card__delete" type="button">delete</button>
+          <button class="card__delete" type="button" data-id="delete">delete</button>
         </div>
       </div>
     </form>
@@ -270,11 +270,11 @@ export const getCardTemplate = (card) => {
 };
 
 export const getEditCardtemplate = (card) => {
-  return `<article class="card card--edit card--${card.color} ${card.isRepeating ? `card--repeat` : ``}" id="${card.id}">
+  return `<article class="card card--edit card--${card.color} ${card.isRepeating ? `card--repeat` : ``}" id="${card.id}" data-id="card">
     <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__control">
-          <button type="button" class="card__btn card__btn--edit">edit</button>
+          <button type="button" class="card__btn card__btn--edit" data-id="edit">edit</button>
           <button type="button" class="card__btn card__btn--archive">archive</button>
           <button type="button" class="card__btn card__btn--favorites card__btn--disabled">favorites</button>
         </div>
@@ -294,8 +294,8 @@ export const getEditCardtemplate = (card) => {
         <div class="card__settings">
           <div class="card__details">
             <div class="card__dates">
-              <button class="card__date-deadline-toggle" type="button">
-                date: <span class="card__date-status">${card.isDate ? `yes` : `no`}</span>
+              <button class="card__date-deadline-toggle" type="button" data-id="date-status">
+                date: <span class="card__date-status" data-id="date-status">${card.isDate ? `yes` : `no`}</span>
               </button>
 
               <fieldset class="card__date-deadline" ${!card.isDate && `disabled`}>
@@ -308,8 +308,8 @@ export const getEditCardtemplate = (card) => {
                 </label>
               </fieldset>
 
-              <button class="card__repeat-toggle" type="button">
-                repeat: <span class="card__repeat-status">${card.isRepeat ? `yes` : `no`}</span>
+              <button class="card__repeat-toggle" type="button" data-id="repeat-status">
+                repeat: <span class="card__repeat-status" data-id="repeat-status">${card.isRepeat ? `yes` : `no`}</span>
               </button>
 
               <fieldset class="card__repeat-days" ${!card.isRepeat && `disabled`}>
@@ -357,26 +357,26 @@ export const getEditCardtemplate = (card) => {
               <h3 class="card__colors-title">Color</h3>
               <div class="card__colors-wrap">
                 <input type="radio" id="color-black-${card.id}" class="card__color-input card__color-input--black visually-hidden" name="color" value="black" ${card.color === `black` && `checked`}/>
-                <label for="color-black-${card.id}" class="card__color card__color--black">black</label>
+                <label for="color-black-${card.id}" class="card__color card__color--black" data-id="color-input" data-id="color-input">black</label>
 
                 <input type="radio" id="color-yellow-${card.id}" class="card__color-input card__color-input--yellow visually-hidden" name="color" value="yellow" ${card.color === `yellow` && `checked`} />
-                <label for="color-yellow-${card.id}" class="card__color card__color--yellow">yellow</label>
+                <label for="color-yellow-${card.id}" class="card__color card__color--yellow" data-id="color-input">yellow</label>
 
                 <input type="radio" id="color-blue-${card.id}" class="card__color-input card__color-input--blue visually-hidden" name="color" value="blue" ${card.color === `blue` && `checked`} />
-                <label for="color-blue-${card.id}" class="card__color card__color--blue">blue</label>
+                <label for="color-blue-${card.id}" class="card__color card__color--blue" data-id="color-input">blue</label>
 
                 <input type="radio" id="color-green-${card.id}" class="card__color-input card__color-input--green visually-hidden" name="color" value="green" ${card.color === `green` && `checked`} />
-                <label for="color-green-${card.id}" class="card__color card__color--green">green</label>
+                <label for="color-green-${card.id}" class="card__color card__color--green" data-id="color-input">green</label>
 
                 <input type="radio" id="color-pink-${card.id}" class="card__color-input card__color-input--pink visually-hidden" name="color" value="pink" ${card.color === `pink` && `checked`} />
-                <label for="color-pink-${card.id}" class="card__color card__color--pink">pink</label>
+                <label for="color-pink-${card.id}" class="card__color card__color--pink" data-id="color-input">pink</label>
               </div>
             </div>
           </div>
 
         <div class="card__status-btns">
           <button class="card__save" type="submit">save</button>
-          <button class="card__delete" type="button">delete</button>
+          <button class="card__delete" type="button" data-id="delete">delete</button>
         </div>
       </div>
     </form>

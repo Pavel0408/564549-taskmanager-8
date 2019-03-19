@@ -67,36 +67,28 @@ const filterClickHandler = (evt) => {
 
 // Обработчик на кнопок EDIT, DATE, REPEAT, и радио выбора цвета
 const buttonsClickHandler = (evt) => {
+  const card = evt.target.closest(`article`);
 
-  // Проверяем, был ли клик по нужному элементу
-  if (evt.target.classList.contains(`card__btn--edit`) ||
-    evt.target.classList.contains(`card__delete`) || evt.target.classList.contains(`card__date-status`) ||
-    evt.target.classList.contains(`card__date-deadline-toggle`) || evt.target.classList.contains(`card__repeat-status`) ||
-    evt.target.classList.contains(`card__repeat-toggle`) ||
-    evt.target.classList.contains(`card__color`)) {
-
-    const card = evt.target.closest(`article`);
+  if (card) {
     const cardItem = cardsById[card.id];
-    const button = evt.target.textContent.trim();
+    const button = evt.target.dataset.id;
 
-    if (cardItem && cardItem.changeEditingStatus && cardItem.render && cardItem.changeDateStatus && cardItem.changeRepeatStatus && cardItem.changeColor) {
+    if (card && cardItem && button) {
 
       evt.preventDefault();
 
       // Обработчик кнопки DATE
-      if (evt.target.classList.contains(`card__date-status`) ||
-        evt.target.classList.contains(`card__date-deadline-toggle`)) {
+      if (button === `date-status` && cardItem.changeEditingStatus) {
         cardItem.changeDateStatus();
       }
 
       // Обработчик кнопки REPEAT
-      if (evt.target.classList.contains(`card__repeat-status`) ||
-        evt.target.classList.contains(`card__repeat-toggle`)) {
+      if (button === `repeat-status` && cardItem.changeRepeatStatus) {
         cardItem.changeRepeatStatus();
       }
 
       // Обработчик выбора цвета
-      if (evt.target.classList.contains(`card__color`)) {
+      if (button === `color-input` && cardItem.changeColor) {
         const color = evt.target.textContent;
         cardItem.changeColor(color);
       }
@@ -109,12 +101,14 @@ const buttonsClickHandler = (evt) => {
       }
 
       // Обработчик кнопки EDIT
-      if (button === `edit`) {
+      if (button === `edit` && cardItem.changeEditingStatus) {
         cardItem.changeEditingStatus();
       }
 
       // Перерисовываем карточку
-      board.replaceChild(cardItem.render(), card);
+      if (cardItem.render) {
+        board.replaceChild(cardItem.render(), card);
+      }
     }
   }
 };
