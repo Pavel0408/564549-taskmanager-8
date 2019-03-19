@@ -73,7 +73,7 @@ export class Task extends Component {
     this._dueDate = data.dueDate;
   }
 
-  static processForm(formData) {
+  static parseForm(formData) {
     const repeatingDays = formData.getAll(`repeat`);
 
     const entry = {
