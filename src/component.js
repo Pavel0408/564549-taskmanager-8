@@ -31,11 +31,12 @@ export class Component {
   }
 
   changeRepeatStatus() {
-    if (this._isRepeat) {
+    if (this.state._isRepeat) {
       Object.keys(this._repeatingDays).forEach((day) => {
         this._repeatingDays[day] = false;
       });
     }
+
     this.state._isRepeat = !this.state._isRepeat;
   }
 
