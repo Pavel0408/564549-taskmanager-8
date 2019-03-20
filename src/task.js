@@ -19,16 +19,19 @@ export class Task extends Component {
     this._dueDate = card.dueDate;
     this._repeatingDays = card.repeatingDays;
     this._element = null;
-    this._editing = false;
     this._id = ``;
     this.isDone = card.isDone;
     this._color = card.color;
     this.isFavorite = card.isFavorite;
-    this._isDate = true;
-    this._isRepeat = true;
+
+    this.state = {
+      _isDate: true,
+      _isRepeat: true,
+      _editing: false
+    };
   }
 
-  render(getTemplates = this._editing ? getEditCardtemplate : getCardTemplate) {
+  render(getTemplates = this.state._editing ? getEditCardtemplate : getCardTemplate) {
     const newElement = document.createElement(`div`);
     const templateArguments = {
       color: this._color,
@@ -39,14 +42,14 @@ export class Task extends Component {
       repeatingDays: this._repeatingDays,
       tags: this._tags,
       picture: this._picture,
-      isDate: this._isDate,
-      isRepeat: this._isRepeat
+      isDate: this.state._isDate,
+      isRepeat: this.state._isRepeat
     };
 
     newElement.innerHTML = getTemplates(templateArguments);
     this._element = newElement.firstChild;
 
-    if (this._isDate && this._editing) {
+    if (this.state._isDate && this.state._editing) {
       flatpickr(this._element.querySelector(`.card__date`), {
         altInput: true,
         altFormat: `j F`,
@@ -107,7 +110,9 @@ export class Task extends Component {
       entry.dueDate.setHours(hours, minutes);
     };
 
-    setTime(formData.get(`time`));
+    if (formData.get(`time`)) {
+      setTime(formData.get(`time`));
+    }
 
     return entry;
   }

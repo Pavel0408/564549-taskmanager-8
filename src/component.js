@@ -18,12 +18,12 @@ export class Component {
   }
 
   changeEditingStatus() {
-    this._editing = !this._editing;
-    this._isRepeat = this._isRepeating();
+    this.state._editing = !this.state._editing;
+    this.state._isRepeat = this._isRepeating();
   }
 
   changeDateStatus() {
-    this._isDate = !this._isDate;
+    this.state._isDate = !this.state._isDate;
   }
 
   changeColor(color) {
@@ -36,7 +36,7 @@ export class Component {
         this._repeatingDays[day] = false;
       });
     }
-    this._isRepeat = !this._isRepeat;
+    this.state._isRepeat = !this.state._isRepeat;
   }
 
   _isRepeating() {

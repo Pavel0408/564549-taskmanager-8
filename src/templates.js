@@ -55,7 +55,7 @@ export const getCardTemplate = (card) => {
                 date: <span class="card__date-status" data-id="date-status">no</span>
               </button>
 
-              <fieldset class="card__date-deadline">
+              <fieldset class="card__date-deadline" ${!card.isDate && `disabled`}>
                 <label class="card__input-deadline-wrap">
                   <input
                     class="card__date"
