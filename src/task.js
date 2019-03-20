@@ -84,6 +84,7 @@ export class Task extends Component {
       color: formData.get(`color`),
       tags: new Set(formData.getAll(`hashtag`)),
       dueDate: new Date(formData.get(`date`)),
+
       repeatingDays: {
         'Mo': (repeatingDays.indexOf(`mo`) !== -1),
         'Tu': (repeatingDays.indexOf(`tu`) !== -1),
@@ -112,6 +113,8 @@ export class Task extends Component {
 
     if (formData.get(`time`)) {
       setTime(formData.get(`time`));
+    } else {
+      entry.dueDate = new Date();
     }
 
     return entry;
