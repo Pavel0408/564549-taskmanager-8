@@ -24,14 +24,14 @@ export class Task extends Component {
     this._color = card.color;
     this.isFavorite = card.isFavorite;
 
-    this.state = {
-      _isDate: true,
-      _isRepeat: true,
-      _editing: false
+    this._state = {
+      isDate: true,
+      isRepeat: true,
+      editing: false
     };
   }
 
-  render(getTemplates = this.state._editing ? getEditCardtemplate : getCardTemplate) {
+  render(getTemplates = this._state.editing ? getEditCardtemplate : getCardTemplate) {
     const newElement = document.createElement(`div`);
     const templateArguments = {
       color: this._color,
@@ -42,14 +42,14 @@ export class Task extends Component {
       repeatingDays: this._repeatingDays,
       tags: this._tags,
       picture: this._picture,
-      isDate: this.state._isDate,
-      isRepeat: this.state._isRepeat
+      isDate: this._state.isDate,
+      isRepeat: this._state.isRepeat
     };
 
     newElement.innerHTML = getTemplates(templateArguments);
     this._element = newElement.firstChild;
 
-    if (this.state._isDate && this.state._editing) {
+    if (this._state.isDate && this._state.editing) {
       flatpickr(this._element.querySelector(`.card__date`), {
         altInput: true,
         altFormat: `j F`,
