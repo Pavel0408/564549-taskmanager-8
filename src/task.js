@@ -79,40 +79,10 @@ export class Task extends Component {
   static parseForm(formData) {
     const repeatingDays = formData.getAll(`repeat`);
 
-    const entry = {
-      title: formData.get(`text`),
-      color: formData.get(`color`),
-      tags: new Set(formData.getAll(`hashtag`)),
-      dueDate: new Date(formData.get(`date`)),
-
-      repeatingDays: {
-        'Mo': (repeatingDays.indexOf(`mo`) !== -1),
-        'Tu': (repeatingDays.indexOf(`tu`) !== -1),
-        'We': (repeatingDays.indexOf(`we`) !== -1),
-        'Th': (repeatingDays.indexOf(`th`) !== -1),
-        'Fr': (repeatingDays.indexOf(`fr`) !== -1),
-        'Sa': ((repeatingDays.indexOf(`sa`) !== -1)),
-        'Su': (repeatingDays.indexOf(`su`) !== -1),
-      }
-    };
-
-    const setTime = (value) => {
-      value = value.split(` `);
-      let [time, timeAdd] = value;
-      time = time.split(`:`);
-      let [hours, minutes] = time;
-
-      hours = parseInt(hours, 10);
-      minutes = parseInt(minutes, 10);
-      if (timeAdd === `PM`) {
-        hours += 12;
-      }
-
-      entry.dueDate.setHours(hours, minutes);
-    };
+    const entry = gentrateEntry(formData, repeatingDays);
 
     if (formData.get(`time`)) {
-      setTime(formData.get(`time`));
+      setTime(formData.get(`time`), entry);
     } else {
       entry.dueDate = new Date();
     }
@@ -120,3 +90,37 @@ export class Task extends Component {
     return entry;
   }
 }
+
+const gentrateEntry = (formData, repeatingDays) => {
+  return {
+    title: formData.get(`text`),
+    color: formData.get(`color`),
+    tags: new Set(formData.getAll(`hashtag`)),
+    dueDate: new Date(formData.get(`date`)),
+
+    repeatingDays: {
+      'Mo': (repeatingDays.indexOf(`mo`) !== -1),
+      'Tu': (repeatingDays.indexOf(`tu`) !== -1),
+      'We': (repeatingDays.indexOf(`we`) !== -1),
+      'Th': (repeatingDays.indexOf(`th`) !== -1),
+      'Fr': (repeatingDays.indexOf(`fr`) !== -1),
+      'Sa': ((repeatingDays.indexOf(`sa`) !== -1)),
+      'Su': (repeatingDays.indexOf(`su`) !== -1),
+    }
+  };
+};
+
+const setTime = (value, entry) => {
+  value = value.split(` `);
+  let [time, timeAdd] = value;
+  time = time.split(`:`);
+  let [hours, minutes] = time;
+
+  hours = parseInt(hours, 10);
+  minutes = parseInt(minutes, 10);
+  if (timeAdd === `PM`) {
+    hours += 12;
+  }
+
+  entry.dueDate.setHours(hours, minutes);
+};
