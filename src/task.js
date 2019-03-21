@@ -79,7 +79,7 @@ export class Task extends Component {
   static parseForm(formData) {
     const repeatingDays = formData.getAll(`repeat`);
 
-    const entry = gentrateEntry(formData, repeatingDays);
+    const entry = generateEntry(formData, repeatingDays);
 
     if (formData.get(`time`)) {
       setTime(formData.get(`time`), entry);
@@ -91,7 +91,7 @@ export class Task extends Component {
   }
 }
 
-const gentrateEntry = (formData, repeatingDays) => {
+const generateEntry = (formData, repeatingDays) => {
   return {
     title: formData.get(`text`),
     color: formData.get(`color`),
