@@ -118,6 +118,7 @@ const setTime = (value, entry) => {
 
   hours = parseInt(hours, 10);
   minutes = parseInt(minutes, 10);
+
   if (timeAdd === `PM`) {
     hours += 12;
   }
