@@ -14,8 +14,18 @@ export const days = {
   Wednesday: `We`,
   Thursday: `Th`,
   Friday: `Fr`,
-  Saturday: ` Sa`,
+  Saturday: `Sa`,
   Sunday: `Su`
+};
+
+export const daysShort = {
+  Mo: `Monday`,
+  Tu: `Tuesday`,
+  We: `Wednesday`,
+  Th: `Thursday`,
+  Fr: `Friday`,
+  Sa: `Saturday`,
+  Su: `Sunday`
 };
 
 export const repeatingDays = function () {

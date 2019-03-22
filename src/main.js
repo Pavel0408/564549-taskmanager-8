@@ -4,11 +4,6 @@ import {
 } from "./mock/generate-mock-cards-array";
 
 import {
-  getCardTemplate,
-  getEditCardtemplate
-} from "./templates";
-
-import {
   cardsById
 } from "./cards-by-id";
 
@@ -29,8 +24,6 @@ const filtersNames = [
 const board = document.querySelector(`.board__tasks`);
 const START_CARDS_COUNT = 7;
 
-let mockCards = [];
-
 const renderFilters = () => {
   const filterContainer = document.querySelector(`.main__filter`);
   let fragment = ``;
@@ -42,20 +35,22 @@ const renderFilters = () => {
 
 const renderCards = (number) => {
   let fragment = document.createDocumentFragment();
-  mockCards = generateCardsArray(number);
   board.innerHTML = ``;
-  mockCards = generateCardsArray(number);
-  mockCards.map((mockData) => {
-    const task = new Task(mockData);
-    task.id = cardsById.newIndex;
-    cardsById.add(task);
-    return task;
-  })
+
+  generateCardsArray(number)
+    .map((mockData) => {
+      const task = new Task(mockData);
+      task.id = cardsById.newIndex;
+      cardsById.add(task);
+
+      return task;
+    })
     .forEach((card) => {
       if (card) {
-        fragment.appendChild(card.render(getCardTemplate));
+        fragment.appendChild(card.render());
       }
     });
+
   board.appendChild(fragment);
 };
 
@@ -70,34 +65,68 @@ const filterClickHandler = (evt) => {
   }
 };
 
+// Обработчик на кнопок EDIT, DATE, REPEAT, и радио выбора цвета
 const buttonsClickHandler = (evt) => {
+  const card = evt.target.closest(`article`);
+
+  if (card) {
+    const cardItem = cardsById[card.id];
+    const button = evt.target.dataset.id;
+
+    if (card && cardItem && button) {
+
+      evt.preventDefault();
+
+      // Обработчик кнопки DATE
+      if (button === `date-status` && cardItem.changeEditingStatus) {
+        cardItem.changeDateStatus();
+      }
+
+      // Обработчик кнопки REPEAT
+      if (button === `repeat-status` && cardItem.changeRepeatStatus) {
+        cardItem.changeRepeatStatus();
+      }
+
+      // Обработчик выбора цвета
+      if (button === `color-input` && cardItem.changeColor) {
+        const color = evt.target.textContent;
+        cardItem.changeColor(color);
+      }
+
+      // Обработчик кнопки DELETE
+      if (button === `delete`) {
+        card.remove();
+        cardsById[card.id] = null;
+        return;
+      }
+
+      // Обработчик кнопки EDIT
+      if (button === `edit` && cardItem.changeEditingStatus) {
+        cardItem.changeEditingStatus();
+      }
+
+      // Перерисовываем карточку
+      if (cardItem.render) {
+        board.replaceChild(cardItem.render(), card);
+      }
+    }
+  }
+};
+
+const buttonSubmitHandler = (evt) => {
   evt.preventDefault();
 
-  if (evt.target.classList.contains(`card__btn--edit`) || evt.target.classList.contains(`card__save`) ||
-    evt.target.classList.contains(`card__delete`)) {
-    const card = evt.target.closest(`article`);
-    const cardItem = cardsById[card.id];
-    let template = null;
+  const card = evt.target.closest(`article`);
+  const cardItem = cardsById[card.id];
+  const formData = new FormData(card.querySelector(`.card__form`));
 
-    const button = evt.target.textContent.trim();
+  if (cardItem && Task.parseForm && cardItem.changeEditingStatus && cardItem.render) {
+    const newData = Task.parseForm(formData);
 
-    if (button === `edit`) {
-      template = getEditCardtemplate;
+    cardItem.update(newData);
+    cardItem.changeEditingStatus();
 
-    } else if (button === `save`) {
-      template = getCardTemplate;
-
-    } else {
-      card.remove();
-      cardsById[card.id] = null;
-      return;
-    }
-
-    if (cardItem && cardItem.changeEditingStatus && cardItem.render) {
-      cardItem.changeEditingStatus();
-      board.replaceChild(cardItem.render(template), card);
-      return;
-    }
+    board.replaceChild(cardItem.render(), card);
   }
 };
 
@@ -106,3 +135,4 @@ renderCards(START_CARDS_COUNT);
 
 document.body.addEventListener(`click`, filterClickHandler);
 document.body.addEventListener(`click`, buttonsClickHandler);
+document.body.addEventListener(`submit`, buttonSubmitHandler);
