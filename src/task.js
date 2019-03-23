@@ -23,6 +23,7 @@ export class Task extends Component {
     this.isDone = card.isDone;
     this._color = card.color;
     this.isFavorite = card.isFavorite;
+    this._isArchive = card.isArchive;
 
     this._state = {
       isDate: true,

@@ -1,4 +1,3 @@
-import generateFilter from './generate-filter';
 import {
   generateCardsArray
 } from "./mock/generate-mock-cards-array";
@@ -10,6 +9,14 @@ import {
 import {
   Task
 } from "./task";
+
+import {
+  Filter
+} from "./filter";
+
+import {
+  filtersByNames
+} from "./filters-by-name";
 
 const filtersNames = [
   `all`,
@@ -26,30 +33,35 @@ const START_CARDS_COUNT = 7;
 
 const renderFilters = () => {
   const filterContainer = document.querySelector(`.main__filter`);
+  filterContainer.innerHTML = ``;
   let fragment = ``;
   filtersNames.forEach((filterName) => {
-    fragment += generateFilter(filterName);
+    const filter = new Filter(filterName);
+    filtersByNames.add(filter);
+    fragment += (filter.render());
   });
+
   filterContainer.innerHTML = fragment;
 };
 
-const renderCards = (number) => {
+const mockCardArray = generateCardsArray(START_CARDS_COUNT)
+  .map((mockData) => {
+    const task = new Task(mockData);
+    task.id = cardsById.newIndex;
+    cardsById.add(task);
+
+    return task;
+  });
+
+const renderCards = (cardsArr) => {
   let fragment = document.createDocumentFragment();
   board.innerHTML = ``;
 
-  generateCardsArray(number)
-    .map((mockData) => {
-      const task = new Task(mockData);
-      task.id = cardsById.newIndex;
-      cardsById.add(task);
-
-      return task;
-    })
-    .forEach((card) => {
-      if (card) {
-        fragment.appendChild(card.render());
-      }
-    });
+  cardsArr.forEach((card) => {
+    if (card) {
+      fragment.appendChild(card.render());
+    }
+  });
 
   board.appendChild(fragment);
 };
@@ -57,10 +69,10 @@ const renderCards = (number) => {
 const filterClickHandler = (evt) => {
   const filter = evt.target.closest(`.filter__label`);
   if (filter) {
-    const number = parseInt(filter.querySelector(`.filter__all-count`).textContent, 10);
+    const name = filter.dataset.id;
 
-    if (number) {
-      renderCards(number);
+    if (name) {
+      renderCards(filtersByNames[name].cardsArr);
     }
   }
 };
@@ -97,6 +109,7 @@ const buttonsClickHandler = (evt) => {
       if (button === `delete`) {
         card.remove();
         cardsById[card.id] = null;
+        renderFilters();
         return;
       }
 
@@ -108,6 +121,7 @@ const buttonsClickHandler = (evt) => {
       // Перерисовываем карточку
       if (cardItem.render) {
         board.replaceChild(cardItem.render(), card);
+        renderFilters();
       }
     }
   }
@@ -130,8 +144,8 @@ const buttonSubmitHandler = (evt) => {
   }
 };
 
+renderCards(mockCardArray);
 renderFilters();
-renderCards(START_CARDS_COUNT);
 
 document.body.addEventListener(`click`, filterClickHandler);
 document.body.addEventListener(`click`, buttonsClickHandler);
