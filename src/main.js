@@ -71,7 +71,7 @@ const filterClickHandler = (evt) => {
   if (filter) {
     const name = filter.dataset.id;
 
-    if (name) {
+    if (name && filtersByNames[name].cardsArr.length > 0) {
       renderCards(filtersByNames[name].cardsArr);
     }
   }
@@ -141,11 +141,13 @@ const buttonSubmitHandler = (evt) => {
     cardItem.changeEditingStatus();
 
     board.replaceChild(cardItem.render(), card);
+    renderFilters();
   }
 };
 
 renderCards(mockCardArray);
 renderFilters();
+document.querySelector(`#filter__all`).setAttribute(`checked`, `checked`);
 
 document.body.addEventListener(`click`, filterClickHandler);
 document.body.addEventListener(`click`, buttonsClickHandler);
