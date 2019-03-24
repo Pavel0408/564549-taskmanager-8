@@ -145,6 +145,28 @@ const buttonSubmitHandler = (evt) => {
   }
 };
 
+const tascsAndStatisticToggle = (evt) => {
+  const changedInput = evt.target.closest(`input`);
+  if (changedInput) {
+    const toggle = changedInput.dataset.toggle;
+
+    if (toggle) {
+      const tascsContainer = document.querySelector(`.board`);
+      const statisticContainer = document.querySelector(`.statistic`);
+
+      if (toggle === `tasks`) {
+        tascsContainer.classList.remove(`visually-hidden`);
+        statisticContainer.classList.add(`visually-hidden`);
+      }
+
+      if (toggle === `statistic`) {
+        tascsContainer.classList.add(`visually-hidden`);
+        statisticContainer.classList.remove(`visually-hidden`);
+      }
+    }
+  }
+};
+
 renderCards(mockCardArray);
 renderFilters();
 document.querySelector(`#filter__all`).setAttribute(`checked`, `checked`);
@@ -152,3 +174,4 @@ document.querySelector(`#filter__all`).setAttribute(`checked`, `checked`);
 document.body.addEventListener(`click`, filterClickHandler);
 document.body.addEventListener(`click`, buttonsClickHandler);
 document.body.addEventListener(`submit`, buttonSubmitHandler);
+document.body.addEventListener(`change`, tascsAndStatisticToggle);
