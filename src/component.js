@@ -9,6 +9,18 @@ export class Component {
     return this._id;
   }
 
+  get dueDate() {
+    return this._dueDate;
+  }
+
+  get tags() {
+    return this._tags;
+  }
+
+  get color() {
+    return this._color;
+  }
+
   set id(id) {
     this._id = id;
   }

@@ -5,13 +5,12 @@ export const filtersFunctions = {
 
   overdue(card) {
     const today = new Date();
-    return card._dueDate < today;
+    return card.dueDate < today;
   },
 
   today(card) {
     const today = new Date();
-    return today.getMonth() === card._dueDate.getMonth() && today.getDate() === card._dueDate.getDate();
-
+    return today.getMonth() === card.dueDate.getMonth() && today.getDate() === card.dueDate.getDate();
   },
 
   favorites(card) {

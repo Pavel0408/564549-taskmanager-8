@@ -22,6 +22,10 @@ import {
   statistic
 } from "./statistic";
 
+import {
+  generateEndAndStartWeek
+} from "./utilities";
+
 import flatpickr from "flatpickr";
 
 const filtersNames = [
@@ -159,15 +163,19 @@ const tascsAndStatisticToggle = (evt) => {
     if (toggle) {
       const tascsContainer = document.querySelector(`.board`);
       const statisticContainer = document.querySelector(`.statistic`);
+      const filterContainer = document.querySelector(`.filter`);
 
       if (toggle === `tasks`) {
         tascsContainer.classList.remove(`visually-hidden`);
+        filterContainer.classList.remove(`visually-hidden`);
         statisticContainer.classList.add(`visually-hidden`);
       }
 
       if (toggle === `statistic`) {
         tascsContainer.classList.add(`visually-hidden`);
+        filterContainer.classList.add(`visually-hidden`);
         statisticContainer.classList.remove(`visually-hidden`);
+        statistic();
       }
     }
   }
@@ -181,11 +189,18 @@ document.body.addEventListener(`click`, filterClickHandler);
 document.body.addEventListener(`click`, buttonsClickHandler);
 document.body.addEventListener(`submit`, buttonSubmitHandler);
 document.body.addEventListener(`change`, tascsAndStatisticToggle);
-statistic();
 
-flatpickr(document.querySelector(`.statistic__period-input`), {
+
+const week = generateEndAndStartWeek();
+
+const statisticInput = document.querySelector(`.statistic__period-input`);
+
+flatpickr((statisticInput), {
   mode: `range`,
   altInput: true,
-  altFormat: `j F`,
-  dateFormat: `j F`
+  altFormat: `j M`,
+  dateFormat: `j M`,
+  defaultDate: [week.monday, week.sunday]
 });
+
+statisticInput.addEventListener(`change`, statistic);

@@ -1,19 +1,99 @@
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import {
+  filtersByNames
+} from "./filters-by-name";
+import {
+  getUniqueValue
+} from "./utilities";
 
 export const statistic = () => {
+  const intervalValue = document.querySelector(`.statistic__period-input`).value;
+  const year = new Date().getFullYear();
+
+  const parseIntervalValue = (value) => {
+    const vlaueArr = value.split(`to`)
+      .map((val) => {
+        const newDay = new Date(val);
+        newDay.setFullYear(year);
+        return newDay;
+      });
+    const [start, end] = vlaueArr;
+
+    if (start && end) {
+      start.setHours(0, 0);
+      end.setHours(23, 59);
+    }
+
+    return {
+      start,
+      end
+    };
+  };
+
+  const interval = parseIntervalValue(intervalValue);
+
   const tagsCtx = document.querySelector(`.statistic__tags`);
   const colorsCtx = document.querySelector(`.statistic__colors`);
+  const cardsArr = filtersByNames.all.cardsArr.slice().filter((card) => {
+    return card.dueDate < interval.end && card.dueDate > interval.start;
+  });
+
+  const label = document.querySelector(`.statistic__period-result`);
+  label.textContent = `In total for the specified period ${cardsArr.length} tasks were fulfilled.`;
+
+
+  const allTags = new Set();
+  cardsArr.forEach((card) => {
+    card.tags.forEach((tag) => {
+      allTags.add(tag);
+    });
+  });
+
+  const allTagsArr = [...allTags];
+
+  const rundomColors = [
+    `#8dd3c7`,
+    `#ffffb3`,
+    `#bebada`,
+    `#fb8072`,
+    `#80b1d3`,
+    `#fdb462`,
+    `#b3de69`,
+    `#fccde5`,
+    `#d9d9d9`,
+    `#bc80bd`,
+    `#ccebc5`,
+    `#ffed6f`
+  ];
+
+  const colorsforTags = allTagsArr.map(() => {
+    let color = getUniqueValue(rundomColors);
+
+    return color;
+  });
+
+  const tagsCountArr = allTagsArr.map((tag) => {
+    let count = 0;
+    cardsArr.forEach((card) => {
+      if (card.tags.has(tag)) {
+        count++;
+      }
+    });
+    return count;
+  });
+
 
   // В разрезе тегов
+  // eslint-disable-next-line no-unused-vars
   const tagsChart = new Chart(tagsCtx, {
     plugins: [ChartDataLabels],
     type: `pie`,
     data: {
-      labels: [`#watchstreams`, `#relaxation`, `#coding`, `#sleep`, `#watermelonpies`],
+      labels: allTagsArr,
       datasets: [{
-        data: [20, 15, 10, 5, 2],
-        backgroundColor: [`#ff3cb9`, `#ffe125`, `#0c5cdd`, `#000000`, `#31b55c`]
+        data: tagsCountArr,
+        backgroundColor: colorsforTags
       }]
     },
     options: {
@@ -61,13 +141,29 @@ export const statistic = () => {
   });
 
   // В разрезе цветов
+  const cardColors = [`pink`, `yellow`, `blue`, `black`, `green`];
+  const cardColorsCount = cardColors.map((color) => {
+    let count = 0;
+    cardsArr.forEach((card) => {
+      if (card.color === color) {
+        count++;
+      }
+    });
+    return count;
+  });
+
+  const colorLabels = cardColors.map((color) => {
+    return `#` + color;
+  });
+
+  // eslint-disable-next-line no-unused-vars
   const colorsChart = new Chart(colorsCtx, {
     plugins: [ChartDataLabels],
     type: `pie`,
     data: {
-      labels: [`#pink`, `#yellow`, `#blue`, `#black`, `#green`],
+      labels: colorLabels,
       datasets: [{
-        data: [5, 25, 15, 10, 30],
+        data: cardColorsCount,
         backgroundColor: [`#ff3cb9`, `#ffe125`, `#0c5cdd`, `#000000`, `#31b55c`]
       }]
     },
