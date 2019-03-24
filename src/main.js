@@ -18,6 +18,12 @@ import {
   filtersByNames
 } from "./filters-by-name";
 
+import {
+  statistic
+} from "./statistic";
+
+import flatpickr from "flatpickr";
+
 const filtersNames = [
   `all`,
   `overdue`,
@@ -175,3 +181,11 @@ document.body.addEventListener(`click`, filterClickHandler);
 document.body.addEventListener(`click`, buttonsClickHandler);
 document.body.addEventListener(`submit`, buttonSubmitHandler);
 document.body.addEventListener(`change`, tascsAndStatisticToggle);
+statistic();
+
+flatpickr(document.querySelector(`.statistic__period-input`), {
+  mode: `range`,
+  altInput: true,
+  altFormat: `j F`,
+  dateFormat: `j F`
+});
