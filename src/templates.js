@@ -382,3 +382,15 @@ export const getEditCardtemplate = (card) => {
     </form>
   </article>`;
 };
+
+export const getFilterTemplate = (filterName, filterCtount) => {
+  return `<input
+  type="radio"
+  id="filter__${filterName}"
+  class="filter__input visually-hidden"
+  name="filter" ${filterCtount > 0 ? `` : `disabled`}/>
+<label for="filter__${filterName}" class="filter__label" data-id=${filterName}>
+${filterName}
+<span class="filter__all-count">${filterCtount}</span>
+</label>`;
+};

@@ -10,6 +10,7 @@
     "start": "webpack-dev-server --open"
   },
   "devDependencies": {
+    "chart.js": "^2.8.0",
     "eslint": "5.13.0",
     "eslint-config-htmlacademy": "0.5.2",
     "webpack": "4.29.5",
@@ -20,6 +21,7 @@
     "node": "10"
   },
   "dependencies": {
+    "chartjs-plugin-datalabels": "0.6.0",
     "flatpickr": "4.5.7"
   }
 }

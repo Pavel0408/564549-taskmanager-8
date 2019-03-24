@@ -26,6 +26,7 @@ export const mockCard = function () {
     color: getRandomValue(colors),
     repeatingDays: repeatingDays(),
     isFavorite: getRandomValue(mockArrays.boolArray),
-    isDone: getRandomValue(mockArrays.boolArray)
+    isDone: getRandomValue(mockArrays.boolArray),
+    isArchive: getRandomValue(mockArrays.boolArray)
   };
 };
