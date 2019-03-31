@@ -28,6 +28,15 @@ import {
 
 import flatpickr from "flatpickr";
 
+import {
+  API
+} from "./api";
+
+const AUTHORIZATION = `Basic eo0w590ik29889aaaa`;
+const END_POINT = `https://es8-demo-srv.appspot.com/task-manager/`;
+
+const api = new API({endPoint: END_POINT, authorization: AUTHORIZATION});
+
 const filtersNames = [
   `all`,
   `overdue`,
@@ -204,3 +213,11 @@ flatpickr((statisticInput), {
 });
 
 statisticInput.addEventListener(`change`, statistic);
+
+console.log(api);
+
+api.getTask()
+  .then((tasks) => {
+    console.log(tasks);
+    renderCards(tasks);
+  });

@@ -19,7 +19,7 @@ export class Task extends Component {
     this._dueDate = card.dueDate;
     this._repeatingDays = card.repeatingDays;
     this._element = null;
-    this._id = ``;
+    this._id = card.id || ``;
     this.isDone = card.isDone;
     this._color = card.color;
     this.isFavorite = card.isFavorite;
@@ -89,6 +89,26 @@ export class Task extends Component {
     }
 
     return entry;
+  }
+
+  static parseTask(data) {
+    const dataTask = {
+      id: data[`id`],
+      title: data[`title`] || ``,
+      dueDate: new Date(data[`due_date`]),
+      tags: new Set(data[`tags`] || []),
+      picture: data[`picture`] || ``,
+      repeatingDays: data[`repeating_days`],
+      color: data[`color`],
+      isFavorite: Boolean(data[`is_favorite`]),
+      isDone: Boolean(data[`is_done`])
+    };
+
+    return new Task(dataTask);
+  }
+
+  static parseTasks(data) {
+    return data.map(Task.parseTask);
   }
 }
 
