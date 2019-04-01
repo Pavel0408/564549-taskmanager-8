@@ -32,10 +32,13 @@ import {
   API
 } from "./api";
 
-const AUTHORIZATION = `Basic eo0w590ik29889aaaa`;
+const AUTHORIZATION = `Basic eo0w590ik29889aaaa${performance.now()}`;
 const END_POINT = `https://es8-demo-srv.appspot.com/task-manager/`;
 
-const api = new API({endPoint: END_POINT, authorization: AUTHORIZATION});
+const api = new API({
+  endPoint: END_POINT,
+  authorization: AUTHORIZATION
+});
 
 const filtersNames = [
   `all`,
@@ -101,7 +104,7 @@ const buttonsClickHandler = (evt) => {
   const card = evt.target.closest(`article`);
 
   if (card) {
-    const cardItem = cardsById[card.id];
+    const cardItem = allTasks[card.id];
     const button = evt.target.dataset.id;
 
     if (card && cardItem && button) {
@@ -127,7 +130,7 @@ const buttonsClickHandler = (evt) => {
       // Обработчик кнопки DELETE
       if (button === `delete`) {
         card.remove();
-        cardsById[card.id] = null;
+        allTasks[card.id] = null;
         renderFilters();
         return;
       }
@@ -150,7 +153,7 @@ const buttonSubmitHandler = (evt) => {
   evt.preventDefault();
 
   const card = evt.target.closest(`article`);
-  const cardItem = cardsById[card.id];
+  const cardItem = allTasks[card.id];
   const formData = new FormData(card.querySelector(`.card__form`));
 
   if (cardItem && Task.parseForm && cardItem.changeEditingStatus && cardItem.render) {
@@ -158,6 +161,11 @@ const buttonSubmitHandler = (evt) => {
 
     cardItem.update(newData);
     cardItem.changeEditingStatus();
+    console.log(cardItem.toRAW());
+    api.updateTask({
+      id: cardItem.id,
+      data: cardItem.toRAW()
+    });
 
     board.replaceChild(cardItem.render(), card);
     renderFilters();
@@ -190,7 +198,7 @@ const tascsAndStatisticToggle = (evt) => {
   }
 };
 
-renderCards(mockCardArray);
+// renderCards(mockCardArray);
 renderFilters();
 document.querySelector(`#filter__all`).setAttribute(`checked`, `checked`);
 
@@ -215,9 +223,18 @@ flatpickr((statisticInput), {
 statisticInput.addEventListener(`change`, statistic);
 
 console.log(api);
+const allTasks = [];
 
 api.getTask()
   .then((tasks) => {
-    console.log(tasks);
+
+    tasks.forEach((task) => {
+      allTasks[parseInt(task.id, 10)] = task;
+      console.log(allTasks);
+    });
     renderCards(tasks);
   });
+
+export {
+  allTasks
+}

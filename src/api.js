@@ -51,18 +51,14 @@ export const API = class {
       .then(Task.parseTask);
   }
 
-  updateTask({
-    id,
-    data
-  }) {
+  updateTask({id, data}) {
+    console.log(id);
     return this._load({
-        url: `tasks/${id}`,
-        method: Method.PUT,
-        body: JSON.stringify(data),
-        headers: new Headers({
-          'Content-Type': `aplication/json`
-        })
-      })
+      url: `tasks/${id}`,
+      method: Method.PUT,
+      body: JSON.stringify(data),
+      headers: new Headers({'Content-Type': `application/json`})
+    })
       .then(toJSON)
       .then(Task.parseTask);
   }

@@ -9,6 +9,10 @@ export class Component {
     return this._id;
   }
 
+  set id(id) {
+    this._id = id;
+  }
+
   get dueDate() {
     return this._dueDate;
   }

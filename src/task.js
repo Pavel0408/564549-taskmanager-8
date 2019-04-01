@@ -13,11 +13,12 @@ export class Task extends Component {
   constructor(card) {
     super();
 
+    this._repeatingDays = card.repeatingDays;
+    console.log(card.repeatingDays);
     this._title = card.title;
     this._tags = card.tags;
     this._picture = card.picture;
     this._dueDate = card.dueDate;
-    this._repeatingDays = card.repeatingDays;
     this._element = null;
     this._id = card.id || ``;
     this.isDone = card.isDone;
@@ -46,7 +47,7 @@ export class Task extends Component {
       isDate: this._state.isDate,
       isRepeat: this._state.isRepeat
     };
-
+    console.log(this._repeatingDays);
     newElement.innerHTML = getTemplates(templateArguments);
     this._element = newElement.firstChild;
 
@@ -103,12 +104,26 @@ export class Task extends Component {
       isFavorite: Boolean(data[`is_favorite`]),
       isDone: Boolean(data[`is_done`])
     };
-
+    console.log(dataTask.id);
     return new Task(dataTask);
   }
 
   static parseTasks(data) {
     return data.map(Task.parseTask);
+  }
+
+  toRAW() {
+    return {
+      'id': this.id,
+      'title': this._title,
+      'due_date': this._dueDate,
+      'tags': [...this._tags.values()],
+      'picture': this._picture,
+      'repeating_days': this._repeatingDays,
+      'color': this._color,
+      'is_favorite': this.isFavorite,
+      'is_done': this.isDone,
+    };
   }
 }
 
@@ -120,13 +135,13 @@ const generateEntry = (formData, repeatingDays) => {
     dueDate: new Date(formData.get(`date`)),
 
     repeatingDays: {
-      'Mo': (repeatingDays.indexOf(`mo`) !== -1),
-      'Tu': (repeatingDays.indexOf(`tu`) !== -1),
-      'We': (repeatingDays.indexOf(`we`) !== -1),
-      'Th': (repeatingDays.indexOf(`th`) !== -1),
-      'Fr': (repeatingDays.indexOf(`fr`) !== -1),
-      'Sa': ((repeatingDays.indexOf(`sa`) !== -1)),
-      'Su': (repeatingDays.indexOf(`su`) !== -1),
+      'mo': (repeatingDays.indexOf(`mo`) !== -1),
+      'tu': (repeatingDays.indexOf(`tu`) !== -1),
+      'we': (repeatingDays.indexOf(`we`) !== -1),
+      'th': (repeatingDays.indexOf(`th`) !== -1),
+      'fr': (repeatingDays.indexOf(`fr`) !== -1),
+      'sa': ((repeatingDays.indexOf(`sa`) !== -1)),
+      'su': (repeatingDays.indexOf(`su`) !== -1),
     }
   };
 };
