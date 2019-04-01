@@ -1,11 +1,15 @@
-import Chart from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import {
-  filtersByNames
-} from "./filters-by-name";
 import {
   getUniqueValue
 } from "./utilities";
+
+import {
+  allTasks
+} from "./main";
+
+import {
+  renderTagsStats,
+  renderColorsStats
+} from "./stats-render";
 
 export const statistic = () => {
   const intervalValue = document.querySelector(`.statistic__period-input`).value;
@@ -33,9 +37,7 @@ export const statistic = () => {
 
   const interval = parseIntervalValue(intervalValue);
 
-  const tagsCtx = document.querySelector(`.statistic__tags`);
-  const colorsCtx = document.querySelector(`.statistic__colors`);
-  const cardsArr = filtersByNames.all.cardsArr.slice().filter((card) => {
+  const cardsArr = allTasks.filter((card) => {
     return card.dueDate < interval.end && card.dueDate > interval.start;
   });
 
@@ -50,7 +52,7 @@ export const statistic = () => {
     });
   });
 
-  const allTagsArr = [...allTags];
+  const tags = [...allTags];
 
   const rundomColors = [
     `#8dd3c7`,
@@ -67,13 +69,13 @@ export const statistic = () => {
     `#ffed6f`
   ];
 
-  const colorsforTags = allTagsArr.map(() => {
+  const tagsColors = tags.map(() => {
     let color = getUniqueValue(rundomColors);
 
     return color;
   });
 
-  const tagsCountArr = allTagsArr.map((tag) => {
+  const tagsCountArr = tags.map((tag) => {
     let count = 0;
     cardsArr.forEach((card) => {
       if (card.tags.has(tag)) {
@@ -84,63 +86,6 @@ export const statistic = () => {
   });
 
 
-  // В разрезе тегов
-  // eslint-disable-next-line no-unused-vars
-  const tagsChart = new Chart(tagsCtx, {
-    plugins: [ChartDataLabels],
-    type: `pie`,
-    data: {
-      labels: allTagsArr,
-      datasets: [{
-        data: tagsCountArr,
-        backgroundColor: colorsforTags
-      }]
-    },
-    options: {
-      plugins: {
-        datalabels: {
-          display: false
-        }
-      },
-      tooltips: {
-        callbacks: {
-          label: (tooltipItem, data) => {
-            const allData = data.datasets[tooltipItem.datasetIndex].data;
-            const tooltipData = allData[tooltipItem.index];
-            const total = allData.reduce((acc, it) => acc + parseFloat(it));
-            const tooltipPercentage = Math.round((tooltipData / total) * 100);
-            return `${tooltipData} TASKS — ${tooltipPercentage}%`;
-          }
-        },
-        displayColors: false,
-        backgroundColor: `#ffffff`,
-        bodyFontColor: `#000000`,
-        borderColor: `#000000`,
-        borderWidth: 1,
-        cornerRadius: 0,
-        xPadding: 15,
-        yPadding: 15
-      },
-      title: {
-        display: true,
-        text: `DONE BY: TAGS`,
-        fontSize: 16,
-        fontColor: `#000000`
-      },
-      legend: {
-        position: `left`,
-        labels: {
-          boxWidth: 15,
-          padding: 25,
-          fontStyle: 500,
-          fontColor: `#000000`,
-          fontSize: 13
-        }
-      }
-    }
-  });
-
-  // В разрезе цветов
   const cardColors = [`pink`, `yellow`, `blue`, `black`, `green`];
   const cardColorsCount = cardColors.map((color) => {
     let count = 0;
@@ -156,58 +101,9 @@ export const statistic = () => {
     return `#` + color;
   });
 
-  // eslint-disable-next-line no-unused-vars
-  const colorsChart = new Chart(colorsCtx, {
-    plugins: [ChartDataLabels],
-    type: `pie`,
-    data: {
-      labels: colorLabels,
-      datasets: [{
-        data: cardColorsCount,
-        backgroundColor: [`#ff3cb9`, `#ffe125`, `#0c5cdd`, `#000000`, `#31b55c`]
-      }]
-    },
-    options: {
-      plugins: {
-        datalabels: {
-          display: false
-        }
-      },
-      tooltips: {
-        callbacks: {
-          label: (tooltipItem, data) => {
-            const allData = data.datasets[tooltipItem.datasetIndex].data;
-            const tooltipData = allData[tooltipItem.index];
-            const total = allData.reduce((acc, it) => acc + parseFloat(it));
-            const tooltipPercentage = Math.round((tooltipData / total) * 100);
-            return `${tooltipData} TASKS — ${tooltipPercentage}%`;
-          }
-        },
-        displayColors: false,
-        backgroundColor: `#ffffff`,
-        bodyFontColor: `#000000`,
-        borderColor: `#000000`,
-        borderWidth: 1,
-        cornerRadius: 0,
-        xPadding: 15,
-        yPadding: 15
-      },
-      title: {
-        display: true,
-        text: `DONE BY: COLORS`,
-        fontSize: 16,
-        fontColor: `#000000`
-      },
-      legend: {
-        position: `left`,
-        labels: {
-          boxWidth: 15,
-          padding: 25,
-          fontStyle: 500,
-          fontColor: `#000000`,
-          fontSize: 13
-        }
-      }
-    }
-  });
+  // В разрезе цветов
+  renderColorsStats(colorLabels, cardColorsCount);
+
+  // В разрезе тегов
+  renderTagsStats(tags, tagsCountArr, tagsColors);
 };
