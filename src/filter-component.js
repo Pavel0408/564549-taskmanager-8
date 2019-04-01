@@ -1,6 +1,6 @@
 import {
-  cardsById
-} from "./cards-by-id";
+  allTasks
+} from "./main";
 
 export class FilterComponent {
   constructor() {
@@ -13,28 +13,14 @@ export class FilterComponent {
     return this._name;
   }
 
-  get cardsArr() {
-    return this._cardsArr;
-  }
+  // get cardsArr() {
+  //   return this._cardsArr;
+  // }
 
 
-  generatCardsArray() {
-    this._cardsArr = Object.keys(cardsById).map((index) => {
-      return cardsById[index];
-    })
-      .filter(this._checkCard)
-      .filter(this._filterFunction);
-  }
+
 
   render() {
     throw new Error(`You need to create a Filter first.`);
-  }
-
-  _checkCard(card) {
-    if (card && card._state) {
-
-      return true;
-    }
-    return false;
   }
 }

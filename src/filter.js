@@ -10,6 +10,11 @@ import {
   filtersFunctions
 } from "./filters-functions";
 
+import {
+  allTasks,
+  checkCard
+} from "./main";
+
 
 export class Filter extends FilterComponent {
   constructor(name) {
@@ -19,12 +24,15 @@ export class Filter extends FilterComponent {
     this._filterFunction = filtersFunctions[this._name];
     this._count = 0;
     this._cardsArr = null;
-    this._filtredFild = `isRepeat`;
+  }
+
+  get filteredTasks() {
+    return allTasks.filter(checkCard).filter(this._filterFunction);
   }
 
   render(getTemplates = getFilterTemplate) {
-    this.generatCardsArray(`_state.isRepeat`);
-    this._count = this._cardsArr.length;
+    this._count = this.filteredTasks.length;
+
     let newElement = getTemplates(this._name, this._count);
     this._element = newElement;
 

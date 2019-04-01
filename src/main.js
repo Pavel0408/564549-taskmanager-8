@@ -1,10 +1,10 @@
-import {
-  generateCardsArray
-} from "./mock/generate-mock-cards-array";
+// import {
+//   generateCardsArray
+// } from "./mock/generate-mock-cards-array";
 
-import {
-  cardsById
-} from "./cards-by-id";
+// import {
+//   cardsById
+// } from "./cards-by-id";
 
 import {
   Task
@@ -32,6 +32,7 @@ import {
   API
 } from "./api";
 
+const allTasks = [];
 const AUTHORIZATION = `Basic eo0w590ik29889aaaa${performance.now()}`;
 const END_POINT = `https://es8-demo-srv.appspot.com/task-manager/`;
 
@@ -51,7 +52,19 @@ const filtersNames = [
 ];
 
 const board = document.querySelector(`.board__tasks`);
-const START_CARDS_COUNT = 7;
+
+const renderCards = (cardsArr) => {
+  let fragment = document.createDocumentFragment();
+  board.innerHTML = ``;
+
+  cardsArr.filter(checkCard).forEach((card) => {
+    if (card) {
+      fragment.appendChild(card.render());
+    }
+  });
+
+  board.appendChild(fragment);
+};
 
 const renderFilters = () => {
   const filterContainer = document.querySelector(`.main__filter`);
@@ -66,35 +79,35 @@ const renderFilters = () => {
   filterContainer.innerHTML = fragment;
 };
 
-const mockCardArray = generateCardsArray(START_CARDS_COUNT)
-  .map((mockData) => {
-    const task = new Task(mockData);
-    task.id = cardsById.newIndex;
-    cardsById.add(task);
-
-    return task;
-  });
-
-const renderCards = (cardsArr) => {
-  let fragment = document.createDocumentFragment();
-  board.innerHTML = ``;
-
-  cardsArr.forEach((card) => {
-    if (card) {
-      fragment.appendChild(card.render());
-    }
-  });
-
-  board.appendChild(fragment);
+const checkCard = (card) => {
+  if (card && card._state) {
+    return true;
+  }
+  return false;
 };
+
+
+api.getTask()
+  .then((tasks) => {
+
+    tasks.forEach((task) => {
+      allTasks[parseInt(task.id, 10)] = task;
+      return allTasks;
+    });
+    return allTasks;
+  }).then(renderCards).
+then(renderFilters).then(() => {
+  document.querySelector(`#filter__all`).setAttribute(`checked`, `checked`);
+});
 
 const filterClickHandler = (evt) => {
   const filter = evt.target.closest(`.filter__label`);
+
   if (filter) {
     const name = filter.dataset.id;
 
-    if (name && filtersByNames[name].cardsArr.length > 0) {
-      renderCards(filtersByNames[name].cardsArr);
+    if (name && filtersByNames[name]) {
+      renderCards(filtersByNames[name].filteredTasks);
     }
   }
 };
@@ -161,7 +174,7 @@ const buttonSubmitHandler = (evt) => {
 
     cardItem.update(newData);
     cardItem.changeEditingStatus();
-    console.log(cardItem.toRAW());
+
     api.updateTask({
       id: cardItem.id,
       data: cardItem.toRAW()
@@ -199,8 +212,8 @@ const tascsAndStatisticToggle = (evt) => {
 };
 
 // renderCards(mockCardArray);
-renderFilters();
-document.querySelector(`#filter__all`).setAttribute(`checked`, `checked`);
+// renderFilters();
+
 
 document.body.addEventListener(`click`, filterClickHandler);
 document.body.addEventListener(`click`, buttonsClickHandler);
@@ -222,19 +235,7 @@ flatpickr((statisticInput), {
 
 statisticInput.addEventListener(`change`, statistic);
 
-console.log(api);
-const allTasks = [];
-
-api.getTask()
-  .then((tasks) => {
-
-    tasks.forEach((task) => {
-      allTasks[parseInt(task.id, 10)] = task;
-      console.log(allTasks);
-    });
-    renderCards(tasks);
-  });
-
 export {
-  allTasks
-}
+  allTasks,
+  checkCard
+};

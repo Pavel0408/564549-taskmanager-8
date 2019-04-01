@@ -14,7 +14,6 @@ export class Task extends Component {
     super();
 
     this._repeatingDays = card.repeatingDays;
-    console.log(card.repeatingDays);
     this._title = card.title;
     this._tags = card.tags;
     this._picture = card.picture;
@@ -47,7 +46,7 @@ export class Task extends Component {
       isDate: this._state.isDate,
       isRepeat: this._state.isRepeat
     };
-    console.log(this._repeatingDays);
+
     newElement.innerHTML = getTemplates(templateArguments);
     this._element = newElement.firstChild;
 
@@ -104,7 +103,7 @@ export class Task extends Component {
       isFavorite: Boolean(data[`is_favorite`]),
       isDone: Boolean(data[`is_done`])
     };
-    console.log(dataTask.id);
+
     return new Task(dataTask);
   }
 
