@@ -178,10 +178,11 @@ const buttonSubmitHandler = (evt) => {
     api.updateTask({
       id: cardItem.id,
       data: cardItem.toRAW()
-    });
+    }).then(() => {
 
-    board.replaceChild(cardItem.render(), card);
-    renderFilters();
+      board.replaceChild(cardItem.render(), card);
+      renderFilters();
+    })
   }
 };
 
