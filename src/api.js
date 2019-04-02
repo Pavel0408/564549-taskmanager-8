@@ -102,6 +102,10 @@ export const API = class {
   }) {
     headers.append(`Authorization`, this._authorization);
 
+    const noTask = document.querySelector(`.board__no-tasks`);
+    noTask.classList.remove(`visually-hidden`);
+    noTask.textContent = `Loading tasks...`;
+
     return fetch(`${this._endPoint}/${url}`, {
       method,
       body,

@@ -86,6 +86,7 @@ const checkCard = (card) => {
   return false;
 };
 
+const noTask = document.querySelector(`.board__no-tasks`);
 
 api.getTask()
   .then((tasks) => {
@@ -94,10 +95,15 @@ api.getTask()
       allTasks[parseInt(task.id, 10)] = task;
       return allTasks;
     });
+
+    noTask.classList.add(`visually-hidden`);
+
     return allTasks;
   }).then(renderCards).
 then(renderFilters).then(() => {
   document.querySelector(`#filter__all`).setAttribute(`checked`, `checked`);
+}).catch(()=>{
+  noTask.textContent = `Something went wrong while loading your tasks. Check your connection or try again later`;
 });
 
 const filterClickHandler = (evt) => {
