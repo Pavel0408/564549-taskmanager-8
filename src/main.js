@@ -182,11 +182,21 @@ const buttonSubmitHandler = (evt) => {
     api.updateTask({
       id: cardItem.id,
       data: cardItem.toRAW()
-    }, '').then(() => {
+    }, card).then(() => {
 
-      board.replaceChild(cardItem.render(), card);
-      renderFilters();
-    }).catch(cardItem.shake);
+    })
+      .then(() => {
+        board.replaceChild(cardItem.render(), card);
+        renderFilters();
+      }).catch(() => {
+        card.querySelectorAll(`form input, form select, form textarea, form button`)
+          .forEach((elem) => {
+            elem.removeAttribute(`disabled`);
+          });
+
+        card.querySelector(`.card__save`).textContent = `save`;
+        cardItem.shake();
+      });
   }
 };
 

@@ -32,8 +32,8 @@ export const API = class {
 
   getTask() {
     return this._load({
-        url: `tasks`
-      })
+      url: `tasks`
+    })
       .then(toJSON)
       .then(Task.parseTasks);
 
@@ -43,13 +43,13 @@ export const API = class {
     task
   }) {
     return this._load({
-        url: `tasks`,
-        method: Method.POST,
-        body: JSON.stringify(task),
-        headers: new Headers({
-          'Content-Type': `application/json`
-        })
+      url: `tasks`,
+      method: Method.POST,
+      body: JSON.stringify(task),
+      headers: new Headers({
+        'Content-Type': `application/json`
       })
+    })
       .then(toJSON)
       .then(Task.parseTask);
   }
@@ -57,7 +57,15 @@ export const API = class {
   updateTask({
     id,
     data
-  }) {
+  },
+  card) {
+    card.querySelectorAll(`form input, form select, form textarea, form button`)
+    .forEach((elem) => {
+      elem.setAttribute(`disabled`, `disabled`);
+    });
+
+    card.querySelector(`.card__save`).textContent = `Saving...`;
+
     return this._load({
       url: `tasks/${id}`,
       method: Method.PUT,
