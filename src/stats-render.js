@@ -117,4 +117,4 @@ export const renderTagsStats = (tags, tagsCountArr, tagsColors) => {
       }
     }
   });
-}
+};

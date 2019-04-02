@@ -24,6 +24,7 @@ export class Task extends Component {
     this._color = card.color;
     this.isFavorite = card.isFavorite;
     this._isArchive = card.isArchive;
+    this.shake = this.shake.bind(this);
 
     this._state = {
       isDate: true,
@@ -89,6 +90,16 @@ export class Task extends Component {
     }
 
     return entry;
+  }
+
+  shake() {
+
+    const ANIMATION_TIMEOUT = 600;
+    this._element.style.animation = `shake ${ANIMATION_TIMEOUT / 1000}s`;
+
+    setTimeout(() => {
+      this._element.style.animation = ``;
+    }, ANIMATION_TIMEOUT);
   }
 
   static parseTask(data) {

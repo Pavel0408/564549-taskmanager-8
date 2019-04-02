@@ -142,9 +142,13 @@ const buttonsClickHandler = (evt) => {
 
       // Обработчик кнопки DELETE
       if (button === `delete`) {
-        card.remove();
-        allTasks[card.id] = null;
-        renderFilters();
+        api.deleteTask({
+          id: cardItem.id
+        }).then(() => {
+          card.remove();
+          allTasks[card.id] = null;
+          renderFilters();
+        });
         return;
       }
 
@@ -178,11 +182,11 @@ const buttonSubmitHandler = (evt) => {
     api.updateTask({
       id: cardItem.id,
       data: cardItem.toRAW()
-    }).then(() => {
+    }, '').then(() => {
 
       board.replaceChild(cardItem.render(), card);
       renderFilters();
-    })
+    }).catch(cardItem.shake);
   }
 };
 

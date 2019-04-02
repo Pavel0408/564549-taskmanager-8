@@ -22,7 +22,10 @@ const toJSON = (response) => {
 };
 
 export const API = class {
-  constructor({endPoint, authorization}) {
+  constructor({
+    endPoint,
+    authorization
+  }) {
     this._endPoint = endPoint;
     this._authorization = authorization;
   }
@@ -51,13 +54,17 @@ export const API = class {
       .then(Task.parseTask);
   }
 
-  updateTask({id, data}) {
-    console.log(id);
+  updateTask({
+    id,
+    data
+  }) {
     return this._load({
       url: `tasks/${id}`,
       method: Method.PUT,
       body: JSON.stringify(data),
-      headers: new Headers({'Content-Type': `application/json`})
+      headers: new Headers({
+        'Content-Type': `application/json`
+      })
     })
       .then(toJSON)
       .then(Task.parseTask);
@@ -67,7 +74,7 @@ export const API = class {
     id
   }) {
     return this._load({
-      url: `tsks/${id}`,
+      url: `tasks/${id}`,
       method: Method.DELETE
     });
   }
@@ -81,14 +88,11 @@ export const API = class {
     headers.append(`Authorization`, this._authorization);
 
     return fetch(`${this._endPoint}/${url}`, {
-        method,
-        body,
-        headers
-      })
-      .then(checkStatus)
-      .catch((err) => {
-        console.error(`fetch error: ${err}`);
-        throw err;
-      });
+      method,
+      body,
+      headers
+    })
+      .then(checkStatus);
+
   }
 };
