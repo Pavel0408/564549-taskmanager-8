@@ -32,7 +32,14 @@ import {
   API
 } from "./api";
 
-const allTasks = [];
+import {
+  checkCard
+} from "./check-card";
+
+import {
+  allTasks
+} from "./all-tasks";
+
 const AUTHORIZATION = `Basic eo0w590ik29889aaaa${performance.now()}`;
 const END_POINT = `https://es8-demo-srv.appspot.com/task-manager/`;
 
@@ -79,12 +86,7 @@ const renderFilters = () => {
   filterContainer.innerHTML = fragment;
 };
 
-const checkCard = (card) => {
-  if (card && card._state) {
-    return true;
-  }
-  return false;
-};
+
 
 const noTask = document.querySelector(`.board__no-tasks`);
 
@@ -268,8 +270,3 @@ flatpickr((statisticInput), {
 });
 
 statisticInput.addEventListener(`change`, statistic);
-
-export {
-  allTasks,
-  checkCard
-};

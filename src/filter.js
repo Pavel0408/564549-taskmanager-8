@@ -11,9 +11,12 @@ import {
 } from "./filters-functions";
 
 import {
-  allTasks,
+  allTasks
+} from "./all-tasks";
+
+import {
   checkCard
-} from "./main";
+} from "./check-card";
 
 
 export class Filter extends FilterComponent {

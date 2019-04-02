@@ -4,7 +4,7 @@ import {
 
 import {
   allTasks
-} from "./main";
+} from "./all-tasks";
 
 import {
   renderTagsStats,
