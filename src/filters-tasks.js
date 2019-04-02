@@ -18,7 +18,7 @@ export const filtersTasks = {
   },
 
   'repeating': (card) => {
-    return card._state.isRepeat;
+    return card.isRepeating;
   },
 
   'tags': () => {

@@ -1,8 +1,4 @@
 import {
-  FilterComponent
-} from "./filter-component";
-
-import {
   getFilterTemplate
 } from "./templates";
 
@@ -18,8 +14,12 @@ import {
   checkCard
 } from "./check-card";
 
+import {
+  Component
+} from "./component";
 
-export class Filter extends FilterComponent {
+
+export class Filter extends Component {
   constructor(name) {
     super();
 
@@ -31,6 +31,10 @@ export class Filter extends FilterComponent {
 
   get filteredTasks() {
     return allTasks.filter(checkCard).filter(this._filterFunction);
+  }
+
+  get name() {
+    return this._name;
   }
 
   render(getTemplates = getFilterTemplate) {
