@@ -11,14 +11,8 @@ import {
 } from "./filters-by-name";
 
 import {
-  statistic
+  Statistic
 } from "./statistic";
-
-import {
-  generateEndAndStartWeek
-} from "./utilities";
-
-import flatpickr from "flatpickr";
 
 import {
   API
@@ -31,6 +25,12 @@ import {
 import {
   allTasks
 } from "./all-tasks";
+
+import {
+  generateEndAndStartWeek
+} from "./utilities";
+
+import flatpickr from "flatpickr";
 
 const AUTHORIZATION = `Basic eo0w590ik29889aaaa${performance.now()}`;
 const END_POINT = `https://es8-demo-srv.appspot.com/task-manager/`;
@@ -94,7 +94,7 @@ api.getTask()
   }).then(renderCards).
 then(renderFilters).then(() => {
   document.querySelector(`#filter__all`).setAttribute(`checked`, `checked`);
-}).catch(()=>{
+}).catch(() => {
   noTask.textContent = `Something went wrong while loading your tasks. Check your connection or try again later`;
 });
 
@@ -146,17 +146,17 @@ const buttonsClickHandler = (evt) => {
           card.remove();
           allTasks[card.id] = null;
           renderFilters();
-        }).catch(()=>{
+        }).catch(() => {
           card.querySelectorAll(`form input, form select, form textarea, form button`)
-          .forEach((elem) => {
-            elem.removeAttribute(`disabled`);
+            .forEach((elem) => {
+              elem.removeAttribute(`disabled`);
 
-            card.querySelector(`.card__delete`).textContent = `delete`;
+              card.querySelector(`.card__delete`).textContent = `delete`;
 
-            card.querySelector(`.card__inner`).style.border = `1px solid red`;
+              card.querySelector(`.card__inner`).style.border = `1px solid red`;
 
-            cardItem.shake();
-          });
+              cardItem.shake();
+            });
         });
         return;
       }
@@ -231,25 +231,20 @@ const tascsAndStatisticToggle = (evt) => {
         tascsContainer.classList.add(`visually-hidden`);
         filterContainer.classList.add(`visually-hidden`);
         statisticContainer.classList.remove(`visually-hidden`);
-        statistic();
+        new Statistic().render();
       }
     }
   }
 };
-
-// renderCards(mockCardArray);
-// renderFilters();
-
 
 document.body.addEventListener(`click`, filterClickHandler);
 document.body.addEventListener(`click`, buttonsClickHandler);
 document.body.addEventListener(`submit`, buttonSubmitHandler);
 document.body.addEventListener(`change`, tascsAndStatisticToggle);
 
+const statisticInput = document.querySelector(`.statistic__period-input`);
 
 const week = generateEndAndStartWeek();
-
-const statisticInput = document.querySelector(`.statistic__period-input`);
 
 flatpickr((statisticInput), {
   mode: `range`,
@@ -259,4 +254,7 @@ flatpickr((statisticInput), {
   defaultDate: [week.monday, week.sunday]
 });
 
-statisticInput.addEventListener(`change`, statistic);
+statisticInput.addEventListener(`change`, () => {
+
+  return new Statistic().render();
+});
