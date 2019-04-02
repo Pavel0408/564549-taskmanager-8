@@ -80,7 +80,14 @@ export const API = class {
 
   deleteTask({
     id
-  }) {
+  }, card) {
+    card.querySelectorAll(`form input, form select, form textarea, form button`)
+    .forEach((elem) => {
+      elem.setAttribute(`disabled`, `disabled`);
+    });
+
+    card.querySelector(`.card__delete`).textContent = `Deleting...`;
+
     return this._load({
       url: `tasks/${id}`,
       method: Method.DELETE

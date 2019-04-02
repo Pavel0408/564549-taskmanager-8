@@ -144,10 +144,21 @@ const buttonsClickHandler = (evt) => {
       if (button === `delete`) {
         api.deleteTask({
           id: cardItem.id
-        }).then(() => {
+        }, card).then(() => {
           card.remove();
           allTasks[card.id] = null;
           renderFilters();
+        }).catch(()=>{
+          card.querySelectorAll(`form input, form select, form textarea, form button`)
+          .forEach((elem) => {
+            elem.removeAttribute(`disabled`);
+
+            card.querySelector(`.card__delete`).textContent = `delete`;
+
+            card.querySelector(`.card__inner`).style.border = `1px solid red`;
+
+            cardItem.shake();
+          });
         });
         return;
       }
@@ -196,6 +207,8 @@ const buttonSubmitHandler = (evt) => {
 
         card.querySelector(`.card__save`).textContent = `save`;
         cardItem.shake();
+
+        card.querySelector(`.card__inner`).style.border = `1px solid red`;
       });
   }
 };
