@@ -1,4 +1,4 @@
-export const filtersFunctions = {
+export const filtersTasks = {
   'all': () => {
     return true;
   },
@@ -8,7 +8,7 @@ export const filtersFunctions = {
     return card.dueDate < today;
   },
 
-  'today': (card) {
+  'today': (card) => {
     const today = new Date();
     return today.getMonth() === card.dueDate.getMonth() && today.getDate() === card.dueDate.getDate();
   },

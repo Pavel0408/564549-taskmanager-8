@@ -7,8 +7,8 @@ import {
 } from "./templates";
 
 import {
-  filtersFunctions
-} from "./filters-functions";
+  filtersTasks
+} from "./filters-tasks";
 
 import {
   allTasks
@@ -24,7 +24,7 @@ export class Filter extends FilterComponent {
     super();
 
     this._name = name;
-    this._filterFunction = filtersFunctions[this._name];
+    this._filterFunction = filtersTasks[this._name];
     this._count = 0;
     this._cardsArr = null;
   }
