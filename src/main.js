@@ -1,11 +1,3 @@
-// import {
-//   generateCardsArray
-// } from "./mock/generate-mock-cards-array";
-
-// import {
-//   cardsById
-// } from "./cards-by-id";
-
 import {
   Task
 } from "./task";
@@ -85,8 +77,6 @@ const renderFilters = () => {
 
   filterContainer.innerHTML = fragment;
 };
-
-
 
 const noTask = document.querySelector(`.board__no-tasks`);
 
