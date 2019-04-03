@@ -1,12 +1,4 @@
 import {
-  generateCardsArray
-} from "./mock/generate-mock-cards-array";
-
-import {
-  cardsById
-} from "./cards-by-id";
-
-import {
   Task
 } from "./task";
 
@@ -19,14 +11,34 @@ import {
 } from "./filters-by-name";
 
 import {
-  statistic
+  Statistic
 } from "./statistic";
+
+import {
+  API
+} from "./api";
+
+import {
+  checkCard
+} from "./check-card";
+
+import {
+  allTasks
+} from "./all-tasks";
 
 import {
   generateEndAndStartWeek
 } from "./utilities";
 
 import flatpickr from "flatpickr";
+
+const AUTHORIZATION = `Basic eo0w590ik29889aaaa${performance.now()}`;
+const END_POINT = `https://es8-demo-srv.appspot.com/task-manager/`;
+
+const api = new API({
+  endPoint: END_POINT,
+  authorization: AUTHORIZATION
+});
 
 const filtersNames = [
   `all`,
@@ -39,7 +51,19 @@ const filtersNames = [
 ];
 
 const board = document.querySelector(`.board__tasks`);
-const START_CARDS_COUNT = 7;
+
+const renderCards = (cardsArr) => {
+  let fragment = document.createDocumentFragment();
+  board.innerHTML = ``;
+
+  cardsArr.filter(checkCard).forEach((card) => {
+    if (card) {
+      fragment.appendChild(card.render());
+    }
+  });
+
+  board.appendChild(fragment);
+};
 
 const renderFilters = () => {
   const filterContainer = document.querySelector(`.main__filter`);
@@ -54,35 +78,34 @@ const renderFilters = () => {
   filterContainer.innerHTML = fragment;
 };
 
-const mockCardArray = generateCardsArray(START_CARDS_COUNT)
-  .map((mockData) => {
-    const task = new Task(mockData);
-    task.id = cardsById.newIndex;
-    cardsById.add(task);
+const noTask = document.querySelector(`.board__no-tasks`);
 
-    return task;
-  });
+api.getTask()
+  .then((tasks) => {
 
-const renderCards = (cardsArr) => {
-  let fragment = document.createDocumentFragment();
-  board.innerHTML = ``;
+    tasks.forEach((task) => {
+      allTasks[parseInt(task.id, 10)] = task;
+      return allTasks;
+    });
 
-  cardsArr.forEach((card) => {
-    if (card) {
-      fragment.appendChild(card.render());
-    }
-  });
+    noTask.classList.add(`visually-hidden`);
 
-  board.appendChild(fragment);
-};
+    return allTasks;
+  }).then(renderCards).
+then(renderFilters).then(() => {
+  document.querySelector(`#filter__all`).setAttribute(`checked`, `checked`);
+}).catch(() => {
+  noTask.textContent = `Something went wrong while loading your tasks. Check your connection or try again later`;
+});
 
 const filterClickHandler = (evt) => {
   const filter = evt.target.closest(`.filter__label`);
+
   if (filter) {
     const name = filter.dataset.id;
 
-    if (name && filtersByNames[name].cardsArr.length > 0) {
-      renderCards(filtersByNames[name].cardsArr);
+    if (name && filtersByNames[name]) {
+      renderCards(filtersByNames[name].filteredTasks);
     }
   }
 };
@@ -92,7 +115,7 @@ const buttonsClickHandler = (evt) => {
   const card = evt.target.closest(`article`);
 
   if (card) {
-    const cardItem = cardsById[card.id];
+    const cardItem = allTasks[card.id];
     const button = evt.target.dataset.id;
 
     if (card && cardItem && button) {
@@ -117,9 +140,24 @@ const buttonsClickHandler = (evt) => {
 
       // Обработчик кнопки DELETE
       if (button === `delete`) {
-        card.remove();
-        cardsById[card.id] = null;
-        renderFilters();
+        api.deleteTask({
+          id: cardItem.id
+        }, card).then(() => {
+          card.remove();
+          allTasks[card.id] = null;
+          renderFilters();
+        }).catch(() => {
+          card.querySelectorAll(`form input, form select, form textarea, form button`)
+            .forEach((elem) => {
+              elem.removeAttribute(`disabled`);
+
+              card.querySelector(`.card__delete`).textContent = `delete`;
+
+              card.querySelector(`.card__inner`).style.border = `1px solid red`;
+
+              cardItem.shake();
+            });
+        });
         return;
       }
 
@@ -141,7 +179,7 @@ const buttonSubmitHandler = (evt) => {
   evt.preventDefault();
 
   const card = evt.target.closest(`article`);
-  const cardItem = cardsById[card.id];
+  const cardItem = allTasks[card.id];
   const formData = new FormData(card.querySelector(`.card__form`));
 
   if (cardItem && Task.parseForm && cardItem.changeEditingStatus && cardItem.render) {
@@ -150,8 +188,26 @@ const buttonSubmitHandler = (evt) => {
     cardItem.update(newData);
     cardItem.changeEditingStatus();
 
-    board.replaceChild(cardItem.render(), card);
-    renderFilters();
+    api.updateTask({
+      id: cardItem.id,
+      data: cardItem.toRAW()
+    }, card).then(() => {
+
+    })
+      .then(() => {
+        board.replaceChild(cardItem.render(), card);
+        renderFilters();
+      }).catch(() => {
+        card.querySelectorAll(`form input, form select, form textarea, form button`)
+          .forEach((elem) => {
+            elem.removeAttribute(`disabled`);
+          });
+
+        card.querySelector(`.card__save`).textContent = `save`;
+        cardItem.shake();
+
+        card.querySelector(`.card__inner`).style.border = `1px solid red`;
+      });
   }
 };
 
@@ -175,25 +231,20 @@ const tascsAndStatisticToggle = (evt) => {
         tascsContainer.classList.add(`visually-hidden`);
         filterContainer.classList.add(`visually-hidden`);
         statisticContainer.classList.remove(`visually-hidden`);
-        statistic();
+        new Statistic().render();
       }
     }
   }
 };
-
-renderCards(mockCardArray);
-renderFilters();
-document.querySelector(`#filter__all`).setAttribute(`checked`, `checked`);
 
 document.body.addEventListener(`click`, filterClickHandler);
 document.body.addEventListener(`click`, buttonsClickHandler);
 document.body.addEventListener(`submit`, buttonSubmitHandler);
 document.body.addEventListener(`change`, tascsAndStatisticToggle);
 
+const statisticInput = document.querySelector(`.statistic__period-input`);
 
 const week = generateEndAndStartWeek();
-
-const statisticInput = document.querySelector(`.statistic__period-input`);
 
 flatpickr((statisticInput), {
   mode: `range`,
@@ -203,4 +254,7 @@ flatpickr((statisticInput), {
   defaultDate: [week.monday, week.sunday]
 });
 
-statisticInput.addEventListener(`change`, statistic);
+statisticInput.addEventListener(`change`, () => {
+
+  return new Statistic().render();
+});

@@ -9,13 +9,13 @@ import {
 import moсkArrays from "./mock-arrays";
 
 export const days = {
-  Monday: `Mo`,
-  Tuesday: `Tu`,
-  Wednesday: `We`,
-  Thursday: `Th`,
-  Friday: `Fr`,
-  Saturday: `Sa`,
-  Sunday: `Su`
+  Monday: `mo`,
+  Tuesday: `tu`,
+  Wednesday: `we`,
+  Thursday: `th`,
+  Friday: `fr`,
+  Saturday: `sa`,
+  Sunday: `su`
 };
 
 export const daysShort = {

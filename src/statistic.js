@@ -1,24 +1,112 @@
-import Chart from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import {
-  filtersByNames
-} from "./filters-by-name";
 import {
   getUniqueValue
 } from "./utilities";
 
-export const statistic = () => {
-  const intervalValue = document.querySelector(`.statistic__period-input`).value;
-  const year = new Date().getFullYear();
+import {
+  allTasks
+} from "./all-tasks";
 
-  const parseIntervalValue = (value) => {
-    const vlaueArr = value.split(`to`)
+import {
+  renderTagsStats,
+  renderColorsStats
+} from "./stats-render";
+
+import {
+  Component
+} from "./component";
+
+const rundomColors = [
+  `#8dd3c7`,
+  `#ffffb3`,
+  `#bebada`,
+  `#fb8072`,
+  `#80b1d3`,
+  `#fdb462`,
+  `#b3de69`,
+  `#fccde5`,
+  `#d9d9d9`,
+  `#bc80bd`,
+  `#ccebc5`,
+  `#ffed6f`
+];
+
+const cardColors = [`pink`, `yellow`, `blue`, `black`, `green`];
+
+const statisticContainer = document.querySelector(`.statistic__active-statistic`);
+
+export class Statistic extends Component {
+  constructor() {
+    super();
+
+    this._rundomCulors = rundomColors.slice();
+    this._intervalValue = document.querySelector(`.statistic__period-input`).value;
+    this._year = new Date().getFullYear();
+    this._interval = this._parseIntervalValue(this._intervalValue);
+
+    this._cards = allTasks.filter((card) => {
+      return card.dueDate < this._interval.end && card.dueDate > this._interval.start;
+    });
+    this._label = document.querySelector(`.statistic__period-result`);
+    this._allTags = new Set();
+
+    this._cards.forEach((card) => {
+      card.tags.forEach((tag) => {
+        this._allTags.add(tag);
+      });
+    });
+    this._tags = [...this._allTags];
+
+    this._tagsColors = this._tags.map(() => {
+      let color = getUniqueValue(rundomColors);
+
+      return color;
+    });
+
+    this._tagsCounts = this._tags.map((tag) => {
+      let count = 0;
+      this._cards.forEach((card) => {
+        if (card.tags.has(tag)) {
+          count++;
+        }
+      });
+      return count;
+    });
+
+    this._cardColorsCount = cardColors.map((color) => {
+      let count = 0;
+      this._cards.forEach((card) => {
+        if (card.color === color) {
+          count++;
+        }
+      });
+      return count;
+    });
+
+    this._colorLabels = cardColors.map((color) => {
+      return `#` + color;
+    });
+  }
+
+  get template() {
+    return `<div class="statistic__circle">
+    <div class="statistic__tags-wrap">
+      <canvas class="statistic__tags" width="400" height="300"></canvas>
+    </div>
+    <div class="statistic__colors-wrap">
+      <canvas class="statistic__colors" width="400" height="300"></canvas>
+    </div>
+  </div>`;
+  }
+
+  _parseIntervalValue(value) {
+
+    const vlaues = value.split(`to`)
       .map((val) => {
         const newDay = new Date(val);
-        newDay.setFullYear(year);
+        newDay.setFullYear(this._year);
         return newDay;
       });
-    const [start, end] = vlaueArr;
+    const [start, end] = vlaues;
 
     if (start && end) {
       start.setHours(0, 0);
@@ -29,185 +117,23 @@ export const statistic = () => {
       start,
       end
     };
-  };
+  }
 
-  const interval = parseIntervalValue(intervalValue);
+  render() {
+    statisticContainer.innerHTML = this.template;
 
-  const tagsCtx = document.querySelector(`.statistic__tags`);
-  const colorsCtx = document.querySelector(`.statistic__colors`);
-  const cardsArr = filtersByNames.all.cardsArr.slice().filter((card) => {
-    return card.dueDate < interval.end && card.dueDate > interval.start;
-  });
+    if (this._cards && this._cards.length) {
 
-  const label = document.querySelector(`.statistic__period-result`);
-  label.textContent = `In total for the specified period ${cardsArr.length} tasks were fulfilled.`;
+      // В разрезе цветов
+      renderColorsStats(this._colorLabels, this._cardColorsCount);
 
+      // В разрезе тегов
+      renderTagsStats(this._tags, this._tagsCounts, this._tagsColors);
 
-  const allTags = new Set();
-  cardsArr.forEach((card) => {
-    card.tags.forEach((tag) => {
-      allTags.add(tag);
-    });
-  });
-
-  const allTagsArr = [...allTags];
-
-  const rundomColors = [
-    `#8dd3c7`,
-    `#ffffb3`,
-    `#bebada`,
-    `#fb8072`,
-    `#80b1d3`,
-    `#fdb462`,
-    `#b3de69`,
-    `#fccde5`,
-    `#d9d9d9`,
-    `#bc80bd`,
-    `#ccebc5`,
-    `#ffed6f`
-  ];
-
-  const colorsforTags = allTagsArr.map(() => {
-    let color = getUniqueValue(rundomColors);
-
-    return color;
-  });
-
-  const tagsCountArr = allTagsArr.map((tag) => {
-    let count = 0;
-    cardsArr.forEach((card) => {
-      if (card.tags.has(tag)) {
-        count++;
-      }
-    });
-    return count;
-  });
-
-
-  // В разрезе тегов
-  // eslint-disable-next-line no-unused-vars
-  const tagsChart = new Chart(tagsCtx, {
-    plugins: [ChartDataLabels],
-    type: `pie`,
-    data: {
-      labels: allTagsArr,
-      datasets: [{
-        data: tagsCountArr,
-        backgroundColor: colorsforTags
-      }]
-    },
-    options: {
-      plugins: {
-        datalabels: {
-          display: false
-        }
-      },
-      tooltips: {
-        callbacks: {
-          label: (tooltipItem, data) => {
-            const allData = data.datasets[tooltipItem.datasetIndex].data;
-            const tooltipData = allData[tooltipItem.index];
-            const total = allData.reduce((acc, it) => acc + parseFloat(it));
-            const tooltipPercentage = Math.round((tooltipData / total) * 100);
-            return `${tooltipData} TASKS — ${tooltipPercentage}%`;
-          }
-        },
-        displayColors: false,
-        backgroundColor: `#ffffff`,
-        bodyFontColor: `#000000`,
-        borderColor: `#000000`,
-        borderWidth: 1,
-        cornerRadius: 0,
-        xPadding: 15,
-        yPadding: 15
-      },
-      title: {
-        display: true,
-        text: `DONE BY: TAGS`,
-        fontSize: 16,
-        fontColor: `#000000`
-      },
-      legend: {
-        position: `left`,
-        labels: {
-          boxWidth: 15,
-          padding: 25,
-          fontStyle: 500,
-          fontColor: `#000000`,
-          fontSize: 13
-        }
-      }
+      document.querySelector(`.statistic__period-result`).textContent = `In total for the specified period ${this._cards.length} tasks were fulfilled.`;
+    } else {
+      statisticContainer.innerHTML = ``;
     }
-  });
 
-  // В разрезе цветов
-  const cardColors = [`pink`, `yellow`, `blue`, `black`, `green`];
-  const cardColorsCount = cardColors.map((color) => {
-    let count = 0;
-    cardsArr.forEach((card) => {
-      if (card.color === color) {
-        count++;
-      }
-    });
-    return count;
-  });
-
-  const colorLabels = cardColors.map((color) => {
-    return `#` + color;
-  });
-
-  // eslint-disable-next-line no-unused-vars
-  const colorsChart = new Chart(colorsCtx, {
-    plugins: [ChartDataLabels],
-    type: `pie`,
-    data: {
-      labels: colorLabels,
-      datasets: [{
-        data: cardColorsCount,
-        backgroundColor: [`#ff3cb9`, `#ffe125`, `#0c5cdd`, `#000000`, `#31b55c`]
-      }]
-    },
-    options: {
-      plugins: {
-        datalabels: {
-          display: false
-        }
-      },
-      tooltips: {
-        callbacks: {
-          label: (tooltipItem, data) => {
-            const allData = data.datasets[tooltipItem.datasetIndex].data;
-            const tooltipData = allData[tooltipItem.index];
-            const total = allData.reduce((acc, it) => acc + parseFloat(it));
-            const tooltipPercentage = Math.round((tooltipData / total) * 100);
-            return `${tooltipData} TASKS — ${tooltipPercentage}%`;
-          }
-        },
-        displayColors: false,
-        backgroundColor: `#ffffff`,
-        bodyFontColor: `#000000`,
-        borderColor: `#000000`,
-        borderWidth: 1,
-        cornerRadius: 0,
-        xPadding: 15,
-        yPadding: 15
-      },
-      title: {
-        display: true,
-        text: `DONE BY: COLORS`,
-        fontSize: 16,
-        fontColor: `#000000`
-      },
-      legend: {
-        position: `left`,
-        labels: {
-          boxWidth: 15,
-          padding: 25,
-          fontStyle: 500,
-          fontColor: `#000000`,
-          fontSize: 13
-        }
-      }
-    }
-  });
-};
+  }
+}

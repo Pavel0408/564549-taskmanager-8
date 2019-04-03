@@ -13,23 +13,52 @@ export class Task extends Component {
   constructor(card) {
     super();
 
+    this._repeatingDays = card.repeatingDays;
     this._title = card.title;
     this._tags = card.tags;
     this._picture = card.picture;
     this._dueDate = card.dueDate;
-    this._repeatingDays = card.repeatingDays;
     this._element = null;
-    this._id = ``;
+    this._id = card.id || ``;
     this.isDone = card.isDone;
     this._color = card.color;
     this.isFavorite = card.isFavorite;
     this._isArchive = card.isArchive;
+    this.shake = this.shake.bind(this);
 
     this._state = {
       isDate: true,
       isRepeat: true,
       editing: false
     };
+  }
+
+  get id() {
+    return this._id;
+  }
+
+  set id(id) {
+    this._id = id;
+  }
+
+  set id(id) {
+    this._id = id;
+  }
+
+  get dueDate() {
+    return this._dueDate;
+  }
+
+  get tags() {
+    return this._tags;
+  }
+
+  get color() {
+    return this._color;
+  }
+
+  get isRepeating() {
+    return this._isRepeating();
   }
 
   render(getTemplates = this._state.editing ? getEditCardtemplate : getCardTemplate) {
@@ -90,6 +119,77 @@ export class Task extends Component {
 
     return entry;
   }
+
+  shake() {
+
+    const ANIMATION_TIMEOUT = 600;
+    this._element.style.animation = `shake ${ANIMATION_TIMEOUT / 1000}s`;
+
+    setTimeout(() => {
+      this._element.style.animation = ``;
+    }, ANIMATION_TIMEOUT);
+  }
+
+  static parseTask(data) {
+    const dataTask = {
+      id: data[`id`],
+      title: data[`title`] || ``,
+      dueDate: new Date(data[`due_date`]),
+      tags: new Set(data[`tags`] || []),
+      picture: data[`picture`] || ``,
+      repeatingDays: data[`repeating_days`],
+      color: data[`color`],
+      isFavorite: Boolean(data[`is_favorite`]),
+      isDone: Boolean(data[`is_done`])
+    };
+
+    return new Task(dataTask);
+  }
+
+  changeEditingStatus() {
+    this._state.editing = !this._state.editing;
+    this._state.isRepeat = this._isRepeating();
+  }
+
+  changeDateStatus() {
+    this._state.isDate = !this._state.isDate;
+  }
+
+  changeColor(color) {
+    this._color = color;
+  }
+
+  changeRepeatStatus() {
+    if (this._state.isRepeat) {
+      Object.keys(this._repeatingDays).forEach((day) => {
+        this._repeatingDays[day] = false;
+      });
+    }
+
+    this._state.isRepeat = !this._state.isRepeat;
+  }
+
+  toRAW() {
+    return {
+      'id': this.id,
+      'title': this._title,
+      'due_date': this._dueDate,
+      'tags': [...this._tags.values()],
+      'picture': this._picture,
+      'repeating_days': this._repeatingDays,
+      'color': this._color,
+      'is_favorite': this.isFavorite,
+      'is_done': this.isDone,
+    };
+  }
+
+  _isRepeating() {
+    return Object.values(this._repeatingDays).some(Boolean);
+  }
+
+  static parseTasks(data) {
+    return data.map(Task.parseTask);
+  }
 }
 
 const generateEntry = (formData, repeatingDays) => {
@@ -100,13 +200,13 @@ const generateEntry = (formData, repeatingDays) => {
     dueDate: new Date(formData.get(`date`)),
 
     repeatingDays: {
-      'Mo': (repeatingDays.indexOf(`mo`) !== -1),
-      'Tu': (repeatingDays.indexOf(`tu`) !== -1),
-      'We': (repeatingDays.indexOf(`we`) !== -1),
-      'Th': (repeatingDays.indexOf(`th`) !== -1),
-      'Fr': (repeatingDays.indexOf(`fr`) !== -1),
-      'Sa': ((repeatingDays.indexOf(`sa`) !== -1)),
-      'Su': (repeatingDays.indexOf(`su`) !== -1),
+      'mo': (repeatingDays.indexOf(`mo`) !== -1),
+      'tu': (repeatingDays.indexOf(`tu`) !== -1),
+      'we': (repeatingDays.indexOf(`we`) !== -1),
+      'th': (repeatingDays.indexOf(`th`) !== -1),
+      'fr': (repeatingDays.indexOf(`fr`) !== -1),
+      'sa': ((repeatingDays.indexOf(`sa`) !== -1)),
+      'su': (repeatingDays.indexOf(`su`) !== -1),
     }
   };
 };

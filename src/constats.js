@@ -1,11 +1,11 @@
 export const repeatingDays = [
-  `Mo`,
-  `Tu`,
-  `We`,
-  `Th`,
-  `Fr`,
-  `Sa`,
-  `Su`
+  `mo`,
+  `tu`,
+  `we`,
+  `th`,
+  `fr`,
+  `sa`,
+  `su`
 ];
 
 export const colors = [

@@ -1,31 +1,31 @@
-export const filtersFunctions = {
-  all() {
+export const filtersTasks = {
+  'all': () => {
     return true;
   },
 
-  overdue(card) {
+  'overdue': (card) => {
     const today = new Date();
     return card.dueDate < today;
   },
 
-  today(card) {
+  'today': (card) => {
     const today = new Date();
     return today.getMonth() === card.dueDate.getMonth() && today.getDate() === card.dueDate.getDate();
   },
 
-  favorites(card) {
+  'favorites': (card) => {
     return card.isFavorite;
   },
 
-  repeating(card) {
-    return card._state.isRepeat;
+  'repeating': (card) => {
+    return card.isRepeating;
   },
 
-  tags() {
+  'tags': () => {
     return true;
   },
 
-  archive(card) {
+  'archive': (card) => {
     return card._isArchive;
   }
 };
