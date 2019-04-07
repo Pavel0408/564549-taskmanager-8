@@ -1,43 +1,42 @@
-import {
-  Task
-} from "./task";
+import {Task} from "./task";
 
-import {
-  Filter
-} from "./filter";
+import {Filter} from "./filter";
 
-import {
-  filtersByNames
-} from "./filters-by-name";
+import {filtersByNames} from "./filters-by-name";
 
-import {
-  Statistic
-} from "./statistic";
+import {Statistic} from "./statistic";
 
-import {
-  API
-} from "./api";
+import {API} from "./api";
 
-import {
-  checkCard
-} from "./check-card";
+import {checkCard} from "./check-card";
 
-import {
-  allTasks
-} from "./all-tasks";
+import {allTasks} from "./all-tasks";
 
-import {
-  generateEndAndStartWeek
-} from "./utilities";
+import {generateEndAndStartWeek} from "./utilities";
 
 import flatpickr from "flatpickr";
 
 const AUTHORIZATION = `Basic eo0w590ik29889aaaa${performance.now()}`;
 const END_POINT = `https://es8-demo-srv.appspot.com/task-manager/`;
 
+import {Store} from "./store";
+
+import {Provider} from "./provider";
+
+const TASKS_STORE_KEY = `tasks-store-key`;
+
 const api = new API({
   endPoint: END_POINT,
   authorization: AUTHORIZATION
+});
+
+const store = new Store({key: TASKS_STORE_KEY, storage: localStorage});
+console.log(store._storage.getItem(10));
+
+const provider = new Provider({
+  api,
+  store,
+  generateId: () => String(Date.now())
 });
 
 const filtersNames = [
@@ -72,17 +71,19 @@ const renderFilters = () => {
   filtersNames.forEach((filterName) => {
     const filter = new Filter(filterName);
     filtersByNames.add(filter);
-    fragment += (filter.render());
+    fragment += filter.render();
   });
 
   filterContainer.innerHTML = fragment;
 };
 
 const noTask = document.querySelector(`.board__no-tasks`);
+noTask.classList.remove(`visually-hidden`);
+noTask.textContent = `Loading tasks...`;
 
-api.getTask()
+provider
+  .getTask()
   .then((tasks) => {
-
     tasks.forEach((task) => {
       allTasks[parseInt(task.id, 10)] = task;
       return allTasks;
@@ -91,12 +92,18 @@ api.getTask()
     noTask.classList.add(`visually-hidden`);
 
     return allTasks;
-  }).then(renderCards).
-then(renderFilters).then(() => {
-  document.querySelector(`#filter__all`).setAttribute(`checked`, `checked`);
-}).catch(() => {
-  noTask.textContent = `Something went wrong while loading your tasks. Check your connection or try again later`;
-});
+  })
+  .then(renderCards)
+  .then((data) => {
+    console.log(data);
+  })
+  .then(renderFilters)
+  .then(() => {
+    document.querySelector(`#filter__all`).setAttribute(`checked`, `checked`);
+  })
+  .catch(() => {
+    noTask.textContent = `Something went wrong while loading your tasks. Check your connection or try again later`;
+  });
 
 const filterClickHandler = (evt) => {
   const filter = evt.target.closest(`.filter__label`);
@@ -119,7 +126,6 @@ const buttonsClickHandler = (evt) => {
     const button = evt.target.dataset.id;
 
     if (card && cardItem && button) {
-
       evt.preventDefault();
 
       // Обработчик кнопки DATE
@@ -140,24 +146,44 @@ const buttonsClickHandler = (evt) => {
 
       // Обработчик кнопки DELETE
       if (button === `delete`) {
-        api.deleteTask({
-          id: cardItem.id
-        }, card).then(() => {
-          card.remove();
-          allTasks[card.id] = null;
-          renderFilters();
-        }).catch(() => {
-          card.querySelectorAll(`form input, form select, form textarea, form button`)
-            .forEach((elem) => {
-              elem.removeAttribute(`disabled`);
+        card
+          .querySelectorAll(
+              `form input, form select, form textarea, form button`
+          )
+          .forEach((elem) => {
+            elem.setAttribute(`disabled`, `disabled`);
+          });
 
-              card.querySelector(`.card__delete`).textContent = `delete`;
+        card.querySelector(`.card__delete`).textContent = `Deleting...`;
+        provider
+          .deleteTask(
+              {
+                id: cardItem.id
+              },
+              card
+          )
+          .then(() => {
+            card.remove();
+            allTasks[card.id] = null;
+            renderFilters();
+          })
+          .catch(() => {
+            card
+              .querySelectorAll(
+                  `form input, form select, form textarea, form button`
+              )
+              .forEach((elem) => {
+                elem.removeAttribute(`disabled`);
 
-              card.querySelector(`.card__inner`).style.border = `1px solid red`;
+                card.querySelector(`.card__delete`).textContent = `delete`;
 
-              cardItem.shake();
-            });
-        });
+                card.querySelector(
+                    `.card__inner`
+                ).style.border = `1px solid red`;
+
+                cardItem.shake();
+              });
+          });
         return;
       }
 
@@ -179,26 +205,46 @@ const buttonSubmitHandler = (evt) => {
   evt.preventDefault();
 
   const card = evt.target.closest(`article`);
+  console.log(card);
   const cardItem = allTasks[card.id];
   const formData = new FormData(card.querySelector(`.card__form`));
 
-  if (cardItem && Task.parseForm && cardItem.changeEditingStatus && cardItem.render) {
+  card.querySelector(`.card__save`).textContent = `Saving...`;
+  if (
+    cardItem &&
+    Task.parseForm &&
+    cardItem.changeEditingStatus &&
+    cardItem.render
+  ) {
     const newData = Task.parseForm(formData);
+    card
+      .querySelectorAll(`form input, form select, form textarea, form button`)
+      .forEach((elem) => {
+        elem.setAttribute(`disabled`, `disabled`);
+      });
 
     cardItem.update(newData);
     cardItem.changeEditingStatus();
 
-    api.updateTask({
-      id: cardItem.id,
-      data: cardItem.toRAW()
-    }, card).then(() => {
-
-    })
+    provider
+      .updateTask(
+          {
+            id: cardItem.id,
+            data: cardItem.toRAW()
+          },
+          card
+      )
+      .then(() => {})
       .then(() => {
         board.replaceChild(cardItem.render(), card);
         renderFilters();
-      }).catch(() => {
-        card.querySelectorAll(`form input, form select, form textarea, form button`)
+      })
+      .catch((err) => {
+        console.log(err);
+        card
+          .querySelectorAll(
+              `form input, form select, form textarea, form button`
+          )
           .forEach((elem) => {
             elem.removeAttribute(`disabled`);
           });
@@ -246,7 +292,7 @@ const statisticInput = document.querySelector(`.statistic__period-input`);
 
 const week = generateEndAndStartWeek();
 
-flatpickr((statisticInput), {
+flatpickr(statisticInput, {
   mode: `range`,
   altInput: true,
   altFormat: `j M`,
@@ -255,6 +301,14 @@ flatpickr((statisticInput), {
 });
 
 statisticInput.addEventListener(`change`, () => {
-
   return new Statistic().render();
+});
+
+window.addEventListener(
+    `offline`,
+    () => (document.title = `${document.title}[OFFLINE]`)
+);
+window.addEventListener(`online`, () => {
+  document.title = document.title.split(`[OFFLINE]`)[0];
+  provider.syncTasks();
 });

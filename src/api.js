@@ -1,6 +1,4 @@
-import {
-  Task
-} from "./task";
+import {Task} from "./task";
 
 const Method = {
   GET: `GET`,
@@ -22,10 +20,7 @@ const toJSON = (response) => {
 };
 
 export const API = class {
-  constructor({
-    endPoint,
-    authorization
-  }) {
+  constructor({endPoint, authorization}) {
     this._endPoint = endPoint;
     this._authorization = authorization;
   }
@@ -35,83 +30,62 @@ export const API = class {
       url: `tasks`
     })
       .then(toJSON)
+      .then((data) => {
+        console.log(data);
+        return data;
+      })
       .then(Task.parseTasks);
-
   }
 
-  createTask({
-    task
-  }) {
+  createTask({task}) {
     return this._load({
       url: `tasks`,
       method: Method.POST,
       body: JSON.stringify(task),
       headers: new Headers({
-        'Content-Type': `application/json`
+        "Content-Type": `application/json`
       })
     })
       .then(toJSON)
       .then(Task.parseTask);
   }
 
-  updateTask({
-    id,
-    data
-  },
-  card) {
-    card.querySelectorAll(`form input, form select, form textarea, form button`)
-    .forEach((elem) => {
-      elem.setAttribute(`disabled`, `disabled`);
-    });
-
-    card.querySelector(`.card__save`).textContent = `Saving...`;
-
+  updateTask({id, data}) {
     return this._load({
       url: `tasks/${id}`,
       method: Method.PUT,
       body: JSON.stringify(data),
       headers: new Headers({
-        'Content-Type': `application/json`
+        "Content-Type": `application/json`
       })
     })
       .then(toJSON)
       .then(Task.parseTask);
   }
 
-  deleteTask({
-    id
-  }, card) {
-    card.querySelectorAll(`form input, form select, form textarea, form button`)
-    .forEach((elem) => {
-      elem.setAttribute(`disabled`, `disabled`);
-    });
-
-    card.querySelector(`.card__delete`).textContent = `Deleting...`;
-
+  deleteTask({id}) {
     return this._load({
       url: `tasks/${id}`,
       method: Method.DELETE
     });
   }
 
-  _load({
-    url,
-    method = Method.GET,
-    body = null,
-    headers = new Headers()
-  }) {
-    headers.append(`Authorization`, this._authorization);
+  syncTasks({tasks}) {
+    return this._load({
+      url: `tasks/sync`,
+      method: `POST`,
+      body: JSON.stringify(tasks),
+      headers: new Headers({"Content-Type": `application/json`})
+    }).then(toJSON);
+  }
 
-    const noTask = document.querySelector(`.board__no-tasks`);
-    noTask.classList.remove(`visually-hidden`);
-    noTask.textContent = `Loading tasks...`;
+  _load({url, method = Method.GET, body = null, headers = new Headers()}) {
+    headers.append(`Authorization`, this._authorization);
 
     return fetch(`${this._endPoint}/${url}`, {
       method,
       body,
       headers
-    })
-      .then(checkStatus);
-
+    }).then(checkStatus);
   }
 };
